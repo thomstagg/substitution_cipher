@@ -103,7 +103,7 @@ void store_user_phrase()
             if(user_phrase.length() > 0)
             {
                 std::cout << "\n--------------------------------------------" << std::endl;
-	            std::cout << "||             Words or phrase            ||" << std::endl;
+	        std::cout << "||             Words or phrase            ||" << std::endl;
                 std::cout << "||           stored successfully!         ||" << std::endl;
                 std::cout << "--------------------------------------------" << std::endl;
                 running = false;
