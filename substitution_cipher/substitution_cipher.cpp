@@ -5,8 +5,8 @@
 std::string user_phrase{};
 
 //Cipher Strings
-std::string alphabet{ " \\@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890\"\"" };
-std::string key{ "0xz9SRedyvtkfuoUOMPC]:;',""mpc\"\"iasr!@#$%XZ87654321 QDYANLWEBGJI)_+-={bgjhq<H^&*(VT>/?|`~}[KF.nlw" };
+std::string alphabet{ " \\!@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890\"\"" };
+std::string key{ "0xz9SRedyvtkfuoUOMPC]:;',""mpc\"\"iasr!@#$%XZ87654321 QDYANLW\\EBGJI)_+-={bgjhq<H^&*(VT>/?|`~}[KF.nlw" };
 
 //Pauses execution until user input
 void pause()
@@ -60,15 +60,17 @@ void print_menu()
     if (user_phrase.length() == 0)
     {
         std::cout << "\n--------------------------------------------" << std::endl;
-	    std::cout << "You currently have no phrase stored" << std::endl;
+	    std::cout << "\nYou currently have no phrase stored" << std::endl;
+        std::cout << "\n--------------------------------------------" << std::endl;
     }
     else
     {
         std::cout << "\n--------------------------------------------" << std::endl;
-        std::cout << "Stored Phrase : " << user_phrase << std::endl;
+        std::cout << "\nStored Phrase : " << user_phrase << std::endl;
+        std::cout << "\n--------------------------------------------" << std::endl;
     }
-    std::cout << "Please choose from the following options" << std::endl;
-    std::cout << "--------------------------------------------" << std::endl;
+    std::cout << "\nPlease choose from the following options" << std::endl;
+    std::cout << "\n--------------------------------------------" << std::endl;
     std::cout << "--------------------------------------------" << std::endl;
     std::cout << "||                                        ||" << std::endl;
     std::cout << "||           S - Enter a phrase           ||" << std::endl;
@@ -117,88 +119,118 @@ void store_user_phrase()
 //Encrypts user phrase
 void encrypt_phrase()
 {
-    bool success{ false };
-    for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+    bool running{ true };
+    int num_of_passes;
+    std::cout << "Enter the number of encryption passes you would like: ";
+    std::cin >> num_of_passes;
+    clear();
+    for (int x {0}; x < num_of_passes; ++x)
     {
-        const size_t position = alphabet.find(user_phrase.at(i));
-        if(position > alphabet.length())
-        {
-            success = false;
-        }
-        if (i != std::string::npos && position <= alphabet.length())
-        {
-            success = true;
-        }
-    }
-    if (success)
-    {
-        std::cout << "\n--------------------------------------------" << std::endl;
-        std::cout << "||             Phrase encrypted           ||" << std::endl;
-        std::cout << "||               successfully!            ||" << std::endl;
-        std::cout << "--------------------------------------------" << std::endl;
+        bool success{ false };
         for (size_t i{ 0 }; i < user_phrase.length(); ++i)
         {
             const size_t position = alphabet.find(user_phrase.at(i));
-            if (i != std::string::npos)
+            if (position > alphabet.length())
             {
-                user_phrase.at(i) = key.at(position);
+                success = false;
+            }
+            if (i != std::string::npos && position <= alphabet.length())
+            {
+                success = true;
             }
         }
+        if (success)
+        {
+            for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+            {
+                const size_t position = alphabet.find(user_phrase.at(i));
+                if (i != std::string::npos)
+                {
+                    user_phrase.at(i) = key.at(position);
+                }
+            }
+        }
+        else
+        {
+            std::cout << "\n--------------------------------------------" << std::endl;
+            std::cout << "||                 Whoops!                ||" << std::endl;
+            std::cout << "||        Encryption not possible as      ||" << std::endl;
+            std::cout << "||      character was not found in key!   ||" << std::endl;
+            std::cout << "--------------------------------------------" << std::endl;
+        }
+    }
+    if (num_of_passes == 1)
+    {
+	    std::cout << "*1 encryption pass complete*" << std::endl;
     }
     else
     {
-        std::cout << "\n--------------------------------------------" << std::endl;
-        std::cout << "||                 Whoops!                ||" << std::endl;
-        std::cout << "||        Encryption not possible as      ||" << std::endl;
-        std::cout << "||      character was not found in key!   ||" << std::endl;
-        std::cout << "--------------------------------------------" << std::endl;
+	    std::cout << "\n*" << num_of_passes << " encryption passes complete*" << std::endl;
     }
+    std::cout << "\n--------------------------------------------" << std::endl;
+    std::cout << "||             Phrase encrypted           ||" << std::endl;
+    std::cout << "||               successfully!            ||" << std::endl;
+    std::cout << "--------------------------------------------" << std::endl;
 }
 
 //Decrypts user phrase
 void decrypt_phrase()
 {
     bool success{ false };
-    for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+    int num_of_passes;
+    std::cout << "Enter the number of decryption passes you would like: ";
+    std::cin >> num_of_passes;
+    clear();
+    for (int x{ 0 }; x < num_of_passes; ++x)
     {
-        const size_t position = key.find(user_phrase.at(i));
-        const char letter = user_phrase.at(i);
-        if (position > key.length() || key.find(letter) == std::string::npos)
-        {
-            success = false;
-            break;
-        }
-    	else if (position <= key.length())
-        {
-            success = true;
-        }
-    }
-    if (success)
-    {
-        std::cout << "\n--------------------------------------------" << std::endl;
-        std::cout << "||             Phrase decrypted           ||" << std::endl;
-        std::cout << "||               successfully!            ||" << std::endl;
-        std::cout << "--------------------------------------------" << std::endl;
-        for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+        for (size_t i { 0 }; i < user_phrase.length(); ++i)
         {
             const size_t position = key.find(user_phrase.at(i));
-            if (i != std::string::npos)
+            const char letter = user_phrase.at(i);
+            if (position > key.length() || key.find(letter) == std::string::npos)
             {
-                user_phrase.at(i) = alphabet.at(position);
+                success = false;
+                break;
+            }
+            if (position <= key.length())
+            {
+                success = true;
+            }
+        }
+        if (success)
+        {
+            for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+            {
+                const size_t position = key.find(user_phrase.at(i));
+                if (i != std::string::npos)
+                {
+                    user_phrase.at(i) = alphabet.at(position);
+                }
+            }
+        }
+        if (success == false)
+        {
+            {
+                std::cout << "\n--------------------------------------------" << std::endl;
+                std::cout << "||                 Whoops!                ||" << std::endl;
+                std::cout << "||        Decryption not possible as      ||" << std::endl;
+                std::cout << "||      character was not found in key!   ||" << std::endl;
+                std::cout << "--------------------------------------------" << std::endl;
             }
         }
     }
-    if(success == false)
+    if (num_of_passes == 1)
     {
-        {
-            std::cout << "\n--------------------------------------------" << std::endl;
-            std::cout << "||                 Whoops!                ||" << std::endl;
-            std::cout << "||        Decryption not possible as      ||" << std::endl;
-            std::cout << "||      character was not found in key!   ||" << std::endl;
-            std::cout << "--------------------------------------------" << std::endl;
-        }
+        std::cout << "\n*1 decryption pass complete*" << std::endl;
     }
-
+    else
+    {
+        std::cout << "\n*" << num_of_passes << " decryption passes complete*" << std::endl;
+    }
+	std::cout << "\n--------------------------------------------" << std::endl;
+	std::cout << "||             Phrase decrypted           ||" << std::endl;
+	std::cout << "||               successfully!            ||" << std::endl;
+	std::cout << "--------------------------------------------" << std::endl;
 }
 
 //Clears the user_phrase string
