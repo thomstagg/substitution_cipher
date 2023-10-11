@@ -115,19 +115,31 @@ void store_user_phrase()
 //Encrypts user phrase
 void encrypt_phrase()
 {
+    bool success{ false };
     for (size_t i{ 0 }; i < user_phrase.length(); ++i)
     {
-        
         const size_t position = alphabet.find(user_phrase.at(i));
-        if(i != std::string::npos)
+        if(i != std::string::npos && position <=62)
         {
             user_phrase.at(i) = key.at(position);
+            success = true;
         }
     }
-    std::cout << "\n--------------------------------------------" << std::endl;
-    std::cout << "||             Phrase encrypted           ||" << std::endl;
-    std::cout << "||               successfully!            ||" << std::endl;
-    std::cout << "--------------------------------------------" << std::endl;
+    if(success)
+    {
+        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "||             Phrase encrypted           ||" << std::endl;
+        std::cout << "||               successfully!            ||" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
+    }
+    else
+    {
+        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "||                 WARNING!               ||" << std::endl;
+        std::cout << "||          Encryption of symbols         ||" << std::endl;
+        std::cout << "||               not possible!            ||" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
+    }
 }
 
 //Decrypts user phrase
@@ -135,7 +147,6 @@ void decrypt_phrase()
 {
     for (size_t i{ 0 }; i < user_phrase.length(); ++i)
     {
-
         const size_t position = key.find(user_phrase.at(i));
         if (i != std::string::npos)
         {
