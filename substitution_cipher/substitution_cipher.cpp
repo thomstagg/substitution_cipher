@@ -5,9 +5,8 @@
 std::string user_phrase{};
 
 //Cipher Strings
-std::string alphabet{ " !@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" };
-std::string key{ "0xz}[KF.nlw9SRedyvtkfuoUOMPC]:;',mpciasr!@#$%XZ87654321 QDYANLWEBGJI)_+-={bgjhq<H^&*(VT>/?|`~" };
-//std::string key{ "!XZ$%W@B=J?Q&YV_K6U1MPCIASRxzn#webg@hq3y2tkfu4mpciasrN-G+)(*D^/" };
+std::string alphabet{ " \\@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890\"\"" };
+std::string key{ "0xz9SRedyvtkfuoUOMPC]:;',""mpc\"\"iasr!@#$%XZ87654321 QDYANLWEBGJI)_+-={bgjhq<H^&*(VT>/?|`~}[KF.nlw" };
 
 //Pauses execution until user input
 void pause()
@@ -149,9 +148,9 @@ void encrypt_phrase()
     else
     {
         std::cout << "\n--------------------------------------------" << std::endl;
-        std::cout << "||                 WARNING!               ||" << std::endl;
-        std::cout << "||        Encryption of c++ reserved      ||" << std::endl;
-        std::cout << "||           symbols not possible!        ||" << std::endl;
+        std::cout << "||                 Whoops!                ||" << std::endl;
+        std::cout << "||        Encryption not possible as      ||" << std::endl;
+        std::cout << "||      character was not found in key!   ||" << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
     }
 }
@@ -193,9 +192,9 @@ void decrypt_phrase()
     {
         {
             std::cout << "\n--------------------------------------------" << std::endl;
-            std::cout << "||                 WARNING!               ||" << std::endl;
-            std::cout << "||        Decryption of c++ reserved      ||" << std::endl;
-            std::cout << "||           symbols not possible!        ||" << std::endl;
+            std::cout << "||                 Whoops!                ||" << std::endl;
+            std::cout << "||        Decryption not possible as      ||" << std::endl;
+            std::cout << "||      character was not found in key!   ||" << std::endl;
             std::cout << "--------------------------------------------" << std::endl;
         }
     }
@@ -226,6 +225,7 @@ void process_user_inputs()
     bool running{ true };
     while (running)
     {
+	    //std::cout << alphabet.length() << " " << key.length() << std::endl; //Debug key length sanity check
         print_menu();
         user_selection = valid_menu_choice();
         clear();
