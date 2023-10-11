@@ -163,18 +163,45 @@ void encrypt_phrase()
 //Decrypts user phrase
 void decrypt_phrase()
 {
+    bool success{ false };
     for (size_t i{ 0 }; i < user_phrase.length(); ++i)
     {
         const size_t position = key.find(user_phrase.at(i));
-        if (i != std::string::npos)
+        if (position > key.length())
         {
-            user_phrase.at(i) = alphabet.at(position);
+            success = false;
+        }
+        if (i != std::string::npos && position <= key.length())
+        {
+            success = true;
         }
     }
-    std::cout << "\n--------------------------------------------" << std::endl;
-    std::cout << "||             Phrase decrypted           ||" << std::endl;
-    std::cout << "||               successfully!            ||" << std::endl;
-    std::cout << "--------------------------------------------" << std::endl;
+    if (success)
+    {
+        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "||             Phrase decrypted           ||" << std::endl;
+        std::cout << "||               successfully!            ||" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
+        for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+        {
+            const size_t position = key.find(user_phrase.at(i));
+            if (i != std::string::npos)
+            {
+                user_phrase.at(i) = alphabet.at(position);
+            }
+        }
+    }
+    else
+    {
+        {
+            std::cout << "\n--------------------------------------------" << std::endl;
+            std::cout << "||                 WARNING!               ||" << std::endl;
+            std::cout << "||                Decryption              ||" << std::endl;
+            std::cout << "||               not possible!            ||" << std::endl;
+            std::cout << "--------------------------------------------" << std::endl;
+        }
+    }
+
 }
 
 //Clears the user_phrase string
