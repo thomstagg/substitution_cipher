@@ -67,13 +67,14 @@ void print_menu()
         std::cout << "\n--------------------------------------------" << std::endl;
         std::cout << "Stored Phrase : " << user_phrase << std::endl;
     }
+    std::cout << "Please choose from the following options" << std::endl;
     std::cout << "--------------------------------------------" << std::endl;
     std::cout << "--------------------------------------------" << std::endl;
     std::cout << "||                                        ||" << std::endl;
     std::cout << "||           S - Enter a phrase           ||" << std::endl;
     std::cout << "||           E - Encrypt Phrase           ||" << std::endl;
     std::cout << "||           D - Decrypt Phrase           ||" << std::endl;
-    std::cout << "||           C - Clear list               ||" << std::endl;
+    std::cout << "||           C - Clear Phrase             ||" << std::endl;
     std::cout << "||           Q - Quit program             ||" << std::endl;
     std::cout << "||                                        ||" << std::endl;
     std::cout << "--------------------------------------------" << std::endl;
@@ -96,14 +97,20 @@ void store_user_phrase()
         bool running{ true };
         while (running)
         {
-	        std::cout << "Enter the words or phrase you would like to be encrypted or decrypted: ";
+            std::cout << "Enter the word or phrase you would like to be encrypted or decrypted" << std::endl;
+            std::cout << "\n--------------------------------------------" << std::endl;
+            std::cout << "||                  *NOTE*                ||" << std::endl;
+            std::cout << "||            You cannot encrypt          ||" << std::endl;
+            std::cout << "||                  symbols               ||" << std::endl;
+            std::cout << "--------------------------------------------" << std::endl;
+	        std::cout << "\nEnter word or phrase: ";
             pause();
             std::getline(std::cin, user_phrase);
             clear();
             if(user_phrase.length() > 0)
             {
                 std::cout << "\n--------------------------------------------" << std::endl;
-	        std::cout << "||             Words or phrase            ||" << std::endl;
+				std::cout << "||             Words or phrase            ||" << std::endl;
                 std::cout << "||           stored successfully!         ||" << std::endl;
                 std::cout << "--------------------------------------------" << std::endl;
                 running = false;
@@ -119,18 +126,29 @@ void encrypt_phrase()
     for (size_t i{ 0 }; i < user_phrase.length(); ++i)
     {
         const size_t position = alphabet.find(user_phrase.at(i));
-        if(i != std::string::npos && position <=62)
+        if(position > alphabet.length())
         {
-            user_phrase.at(i) = key.at(position);
+            success = false;
+        }
+        if (i != std::string::npos && position <= alphabet.length())
+        {
             success = true;
         }
     }
-    if(success)
+    if (success)
     {
         std::cout << "\n--------------------------------------------" << std::endl;
         std::cout << "||             Phrase encrypted           ||" << std::endl;
         std::cout << "||               successfully!            ||" << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
+        for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+        {
+            const size_t position = alphabet.find(user_phrase.at(i));
+            if (i != std::string::npos)
+            {
+                user_phrase.at(i) = key.at(position);
+            }
+        }
     }
     else
     {
