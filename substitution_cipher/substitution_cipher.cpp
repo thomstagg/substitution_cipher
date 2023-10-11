@@ -5,8 +5,9 @@
 std::string user_phrase{};
 
 //Cipher Strings
-std::string alphabet{ " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" };
-std::string key{ "!XZ$%W@B=J?Q&YV_K6U1MPCIASRxzn#webg@hq3y2tkfu4mpciasrN-G+)(*D^/" };
+std::string alphabet{ " !@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" };
+std::string key{ "0xz}[KF.nlw9SRedyvtkfuoUOMPC]:;',mpciasr!@#$%XZ87654321 QDYANLWEBGJI)_+-={bgjhq<H^&*(VT>/?|`~" };
+//std::string key{ "!XZ$%W@B=J?Q&YV_K6U1MPCIASRxzn#webg@hq3y2tkfu4mpciasrN-G+)(*D^/" };
 
 //Pauses execution until user input
 void pause()
@@ -98,12 +99,7 @@ void store_user_phrase()
         while (running)
         {
             std::cout << "Enter the word or phrase you would like to be encrypted or decrypted" << std::endl;
-            std::cout << "\n--------------------------------------------" << std::endl;
-            std::cout << "||                  *NOTE*                ||" << std::endl;
-            std::cout << "||            You cannot encrypt          ||" << std::endl;
-            std::cout << "||                  symbols               ||" << std::endl;
-            std::cout << "--------------------------------------------" << std::endl;
-	        std::cout << "\nEnter word or phrase: ";
+            std::cout << "Your Phrase: ";
             pause();
             std::getline(std::cin, user_phrase);
             clear();
@@ -154,8 +150,8 @@ void encrypt_phrase()
     {
         std::cout << "\n--------------------------------------------" << std::endl;
         std::cout << "||                 WARNING!               ||" << std::endl;
-        std::cout << "||          Encryption of symbols         ||" << std::endl;
-        std::cout << "||               not possible!            ||" << std::endl;
+        std::cout << "||        Encryption of c++ reserved      ||" << std::endl;
+        std::cout << "||           symbols not possible!        ||" << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
     }
 }
@@ -167,11 +163,13 @@ void decrypt_phrase()
     for (size_t i{ 0 }; i < user_phrase.length(); ++i)
     {
         const size_t position = key.find(user_phrase.at(i));
-        if (position > key.length())
+        const char letter = user_phrase.at(i);
+        if (position > key.length() || key.find(letter) == std::string::npos)
         {
             success = false;
+            break;
         }
-        if (i != std::string::npos && position <= key.length())
+    	else if (position <= key.length())
         {
             success = true;
         }
@@ -191,13 +189,13 @@ void decrypt_phrase()
             }
         }
     }
-    else
+    if(success == false)
     {
         {
             std::cout << "\n--------------------------------------------" << std::endl;
             std::cout << "||                 WARNING!               ||" << std::endl;
-            std::cout << "||                Decryption              ||" << std::endl;
-            std::cout << "||               not possible!            ||" << std::endl;
+            std::cout << "||        Decryption of c++ reserved      ||" << std::endl;
+            std::cout << "||           symbols not possible!        ||" << std::endl;
             std::cout << "--------------------------------------------" << std::endl;
         }
     }
