@@ -119,7 +119,6 @@ void store_user_phrase()
 //Encrypts user phrase
 void encrypt_phrase()
 {
-    bool running{ true };
     int num_of_passes;
     std::cout << "Enter the number of encryption passes you would like: ";
     std::cin >> num_of_passes;
