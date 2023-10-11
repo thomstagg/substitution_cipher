@@ -5,8 +5,8 @@
 std::string user_phrase{};
 
 //Cipher Strings
-std::string alphabet{ "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" };
-std::string key{ "XZNLWEBGJHQDYVTKFUOMPCIASRxznlwebgjhqdyvtkfuompciasr" };
+std::string alphabet{ " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" };
+std::string key{ "!XZNLWEBGJHQDYVTKFUOMPCIASRxznlwebgjhqdyvtkfuompciasr" };
 
 //Pauses execution until user input
 void pause()
@@ -100,13 +100,29 @@ void store_user_phrase()
 //Encrypts user phrase
 void encrypt_phrase()
 {
-	std::cout << "Not Implemented yet!" << std::endl;
+    for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+    {
+        
+        const size_t position = alphabet.find(user_phrase.at(i));
+        if(i != std::string::npos)
+        {
+            user_phrase.at(i) = key.at(position);
+        }
+    }
 }
 
 //Decrypts user phrase
 void decrypt_phrase()
 {
-    std::cout << "Not Implemented yet!" << std::endl;
+    for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+    {
+
+        const size_t position = key.find(user_phrase.at(i));
+        if (i != std::string::npos)
+        {
+            user_phrase.at(i) = alphabet.at(position);
+        }
+    }
 }
 
 //Clears the user_phrase string
