@@ -156,20 +156,26 @@ void encrypt_phrase()
             std::cout << "||        Encryption not possible as      ||" << std::endl;
             std::cout << "||      character was not found in key!   ||" << std::endl;
             std::cout << "--------------------------------------------" << std::endl;
+            num_of_passes = 0;
+            break;
         }
     }
     if (num_of_passes == 1)
     {
 	    std::cout << "*1 encryption pass complete*" << std::endl;
+        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "||             Phrase encrypted           ||" << std::endl;
+        std::cout << "||               successfully!            ||" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
     }
-    else
+    if(num_of_passes > 1)
     {
 	    std::cout << "\n*" << num_of_passes << " encryption passes complete*" << std::endl;
+        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "||             Phrase encrypted           ||" << std::endl;
+        std::cout << "||               successfully!            ||" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
     }
-    std::cout << "\n--------------------------------------------" << std::endl;
-    std::cout << "||             Phrase encrypted           ||" << std::endl;
-    std::cout << "||               successfully!            ||" << std::endl;
-    std::cout << "--------------------------------------------" << std::endl;
 }
 
 //Decrypts user phrase
@@ -215,21 +221,27 @@ void decrypt_phrase()
                 std::cout << "||        Decryption not possible as      ||" << std::endl;
                 std::cout << "||      character was not found in key!   ||" << std::endl;
                 std::cout << "--------------------------------------------" << std::endl;
+                num_of_passes = 0;
+                break;
             }
         }
     }
     if (num_of_passes == 1)
     {
         std::cout << "\n*1 decryption pass complete*" << std::endl;
+        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "||             Phrase decrypted           ||" << std::endl;
+        std::cout << "||               successfully!            ||" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
     }
-    else
+    if (num_of_passes > 1)
     {
         std::cout << "\n*" << num_of_passes << " decryption passes complete*" << std::endl;
+        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "||             Phrase decrypted           ||" << std::endl;
+        std::cout << "||               successfully!            ||" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
     }
-	std::cout << "\n--------------------------------------------" << std::endl;
-	std::cout << "||             Phrase decrypted           ||" << std::endl;
-	std::cout << "||               successfully!            ||" << std::endl;
-	std::cout << "--------------------------------------------" << std::endl;
 }
 
 //Clears the user_phrase string
