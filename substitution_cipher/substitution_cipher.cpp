@@ -61,6 +61,7 @@ void print_menu()
     {
         std::cout << "\n--------------------------------------------" << std::endl;
 	    std::cout << "\nYou currently have no phrase stored" << std::endl;
+        std::cout << "\nEnter a word or phrase using option 'S'" << std::endl;
         std::cout << "\n--------------------------------------------" << std::endl;
     }
     else
@@ -268,7 +269,6 @@ void process_user_inputs()
     bool running{ true };
     while (running)
     {
-	    //std::cout << alphabet.length() << " " << key.length() << std::endl; //Debug key length sanity check
         print_menu();
         user_selection = valid_menu_choice();
         clear();
