@@ -38,7 +38,7 @@ std::string valid_menu_choice()
     return input;
 }
 
-//checks for valid response
+//checks for valid yes or no response
 std::string valid_continue()
 {
     std::string const valid_options("yYnN");
@@ -49,6 +49,23 @@ std::string valid_continue()
     {
         std::cin.clear();
         std::cout << "\nInput invalid, please enter a valid character : ";
+        std::cin >> input;
+    }
+    return input;
+}
+
+//checks for valid number of passes
+int valid_num_of_passes()
+{
+    constexpr  int valid_passes_num_max{100};
+    int input{};
+
+    std::cin >> input;
+    while (std::cin.fail() || input >= valid_passes_num_max)
+    {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "\nInput invalid, please enter a valid number below 100: ";
         std::cin >> input;
     }
     return input;
@@ -120,10 +137,9 @@ void store_user_phrase()
 //Encrypts user phrase
 void encrypt_phrase()
 {
-    int num_of_passes;
     char invalid_char{};
     std::cout << "Enter the number of encryption passes you would like: ";
-    std::cin >> num_of_passes;
+    int num_of_passes = valid_num_of_passes();
     clear();
     for (int x {0}; x < num_of_passes; ++x)
     {
@@ -188,9 +204,8 @@ void decrypt_phrase()
 {
     bool success{ false };
     char invalid_char{};
-    int num_of_passes;
     std::cout << "Enter the number of decryption passes you would like: ";
-    std::cin >> num_of_passes;
+    int num_of_passes = valid_num_of_passes();
     clear();
     for (int x{ 0 }; x < num_of_passes; ++x)
     {
