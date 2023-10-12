@@ -5,8 +5,8 @@
 std::string user_phrase{};
 
 //Cipher Strings
-std::string alphabet{ " \\!@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890\"\"" };
-std::string key{ "0xz9SRedyvtkfuoUOMPC]:;',""mpc\"\"iasr!@#$%XZ87654321 QDYANLW\\EBGJI)_+-={bgjhq<H^&*(VT>/?|`~}[KF.nlw" };
+std::string alphabet{ "!@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" };
+std::string key{ "!@#VWXfghijkl_+-=syz ABCDtuqr&*()HIJKv12$%:;'wxEFYZ,456.eGmnopLMNOPQ^{}[]RSTU3<>/?|`~abcd7890" };
 
 //Pauses execution until user input
 void pause()
@@ -121,6 +121,7 @@ void store_user_phrase()
 void encrypt_phrase()
 {
     int num_of_passes;
+    char invalid_char{};
     std::cout << "Enter the number of encryption passes you would like: ";
     std::cin >> num_of_passes;
     clear();
@@ -132,6 +133,7 @@ void encrypt_phrase()
             const size_t position = alphabet.find(user_phrase.at(i));
             if (position > alphabet.length())
             {
+                invalid_char = user_phrase.at(i);
                 success = false;
             }
             if (i != std::string::npos && position <= alphabet.length())
@@ -155,7 +157,9 @@ void encrypt_phrase()
             std::cout << "\n--------------------------------------------" << std::endl;
             std::cout << "||                 Whoops!                ||" << std::endl;
             std::cout << "||        Encryption not possible as      ||" << std::endl;
-            std::cout << "||      character was not found in key!   ||" << std::endl;
+            std::cout << "||  the character " << invalid_char << " was not found in key! ||" << std::endl;
+            std::cout << "||        please clear stored phrase      ||" << std::endl;
+            std::cout << "||              and try again             ||" << std::endl;
             std::cout << "--------------------------------------------" << std::endl;
             num_of_passes = 0;
             break;
@@ -183,6 +187,7 @@ void encrypt_phrase()
 void decrypt_phrase()
 {
     bool success{ false };
+    char invalid_char{};
     int num_of_passes;
     std::cout << "Enter the number of decryption passes you would like: ";
     std::cin >> num_of_passes;
@@ -195,7 +200,8 @@ void decrypt_phrase()
             const char letter = user_phrase.at(i);
             if (position > key.length() || key.find(letter) == std::string::npos)
             {
-                success = false;
+                invalid_char = user_phrase.at(i);
+            	success = false;
                 break;
             }
             if (position <= key.length())
@@ -220,7 +226,9 @@ void decrypt_phrase()
                 std::cout << "\n--------------------------------------------" << std::endl;
                 std::cout << "||                 Whoops!                ||" << std::endl;
                 std::cout << "||        Decryption not possible as      ||" << std::endl;
-                std::cout << "||      character was not found in key!   ||" << std::endl;
+                std::cout << "||  the character " << invalid_char << " was not found in key! ||" << std::endl;
+                std::cout << "||        please clear stored phrase      ||" << std::endl;
+                std::cout << "||              and try again             ||" << std::endl;
                 std::cout << "--------------------------------------------" << std::endl;
                 num_of_passes = 0;
                 break;
