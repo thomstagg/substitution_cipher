@@ -1,13 +1,34 @@
 #include <iostream>
 #include <string>
 #include <limits>
+#include <random>
 
 //Stores User Phrase
 std::string user_phrase{};
 
+//Valid menu options
+std::string valid_menu_option{};
+
+//Valid number
+int valid_number{};
+
 //Cipher Strings
-std::string alphabet{ "!@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" };
-std::string key{ "!@#VWXfghijkl_+-=syz ABCDtuqr&*()HIJKv12$%:;'wxEFYZ,456.eGmnopLMNOPQ^{}[]RSTU3<>/?|`~abcd7890" };
+std::string active_chars{ "!@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" };
+std::string active_key{};
+
+//Generates random key using characters in active_chars
+std::string random_key()
+{
+    std::string chars = active_chars;
+
+    std::random_device random;
+    std::mt19937 twist(random());
+
+    std::shuffle(chars.begin(), chars.end(), twist);
+
+    return chars;
+}
+
 
 //Pauses execution until user input
 void pause()
@@ -23,28 +44,13 @@ void clear()
     std::cout << "\x1B[2J\x1B[H";
 }
 
-//checks for valid response
-std::string valid_menu_choice()
+//checks for valid character
+std::string valid_char()
 {
-    std::string const valid_options("sSeEdDcCqQ");
+    std::string valid_options{};
+    valid_options = valid_menu_option;
+
     std::string input{};
-
-    std::cin >> input;
-    while (input.size() != 1 || valid_options.find(input) == std::string::npos)
-    {
-        std::cin.clear();
-        std::cout << "\nInput invalid, please enter a valid menu selection : ";
-        std::cin >> input;
-    }
-    return input;
-}
-
-//checks for valid yes or no response
-std::string valid_continue()
-{
-    std::string const valid_options("yYnN");
-    std::string input{};
-
     std::cin >> input;
     while (input.size() != 1 || valid_options.find(input) == std::string::npos)
     {
@@ -55,14 +61,14 @@ std::string valid_continue()
     return input;
 }
 
-//checks for valid number of passes
-int valid_num_of_passes()
+//checks for valid number
+int valid_num()
 {
-    constexpr  int valid_passes_num_max{100};
+    int valid_num_max{};
+    valid_num_max = valid_number;
     int input{};
-
     std::cin >> input;
-    while (std::cin.fail() || input >= valid_passes_num_max)
+    while (std::cin.fail() || input >= valid_num_max)
     {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -78,25 +84,26 @@ void print_menu()
     if (user_phrase.length() == 0)
     {
         std::cout << "\n--------------------------------------------" << std::endl;
-	    std::cout << "\nYou currently have no phrase stored" << std::endl;
-        std::cout << "\nEnter a word or phrase using option 'S'" << std::endl;
-        std::cout << "\n--------------------------------------------" << std::endl;
+	    std::cout << "You currently have no phrase stored" << std::endl;
+        std::cout << "Enter a word or phrase using option 'S'" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
     }
     else
     {
         std::cout << "\n--------------------------------------------" << std::endl;
-        std::cout << "\nStored Phrase : " << user_phrase << std::endl;
-        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "Stored Phrase : " << user_phrase << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
     }
     std::cout << "\nPlease choose from the following options" << std::endl;
     std::cout << "\n--------------------------------------------" << std::endl;
     std::cout << "--------------------------------------------" << std::endl;
     std::cout << "||                                        ||" << std::endl;
-    std::cout << "||           S - Enter a phrase           ||" << std::endl;
-    std::cout << "||           E - Encrypt Phrase           ||" << std::endl;
-    std::cout << "||           D - Decrypt Phrase           ||" << std::endl;
-    std::cout << "||           C - Clear Phrase             ||" << std::endl;
-    std::cout << "||           Q - Quit program             ||" << std::endl;
+    std::cout << "||       S - Enter a phrase               ||" << std::endl;
+    std::cout << "||       K - View/change Encrypt Key      ||" << std::endl;
+    std::cout << "||       E - Encrypt Phrase               ||" << std::endl;
+    std::cout << "||       D - Decrypt Phrase               ||" << std::endl;
+    std::cout << "||       C - Clear Phrase                 ||" << std::endl;
+    std::cout << "||       Q - Quit program                 ||" << std::endl;
     std::cout << "||                                        ||" << std::endl;
     std::cout << "--------------------------------------------" << std::endl;
     std::cout << "--------------------------------------------" << std::endl;
@@ -135,25 +142,108 @@ void store_user_phrase()
 	}
 }
 
+//View or edit encryption key
+void encryption_key()
+{
+    bool running{ true };
+    while(running)
+    {
+        std::string user_selection{};
+	    std::cout << "The current encryption key is" << std::endl;
+        std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
+        std::cout << active_key << std::endl;
+        std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
+        std::cout << "\nWould you like to generate a new key or enter an existing one?" << std::endl;
+    	std::cout << "\nEnter 'Y' to proceed or 'N' to keep the current key and return to the menu: ";
+        valid_menu_option = "yYnN";
+        user_selection = valid_char();
+        if (user_selection == "y" || user_selection == "Y")
+        {
+            clear();
+            valid_menu_option = "12";
+            std::cout << "\nPlease choose from the following options" << std::endl;
+            std::cout << "\n--------------------------------------------" << std::endl;
+            std::cout << "--------------------------------------------" << std::endl;
+            std::cout << "||                                        ||" << std::endl;
+            std::cout << "||       1 - Generate New Key             ||" << std::endl;
+            std::cout << "||       2 - Enter existing key           ||" << std::endl;
+            std::cout << "||                                        ||" << std::endl;
+            std::cout << "--------------------------------------------" << std::endl;
+            std::cout << "--------------------------------------------" << std::endl;
+            std::cout << "Enter your choice: ";
+            user_selection = valid_char();
+            if(user_selection == "1")
+            {
+                clear();
+                active_key = random_key();
+                std::cout << "Your new key is" << std::endl;
+                std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
+                std::cout << active_key << std::endl;
+                std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
+                std::cout << "Press 'Y' to continue: ";
+                valid_menu_option = "yYnN";
+                user_selection = valid_char();
+                if (user_selection == "y" || user_selection == "Y")
+                {
+                    clear();
+                    break;
+                }
+            }
+            if (user_selection == "2")
+            {
+                clear();
+	            std::cout << " Enter your encryption key below" << std::endl;
+                std::cout << "\nYour key: ";
+                pause();
+                std::getline(std::cin, active_key);
+                clear();
+                std::cout << "Your key is now" << std::endl;
+                std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
+                std::cout << active_key << std::endl;
+                std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
+                std::cout << "\nPress 'Y' to continue: ";
+                valid_menu_option = "yYnN";
+                user_selection = valid_char();
+                if (user_selection == "y" || user_selection == "Y")
+                {
+                    clear();
+                    break;
+                }
+            }
+        }
+        clear();
+        running = false;
+    }
+}
+
 //Encrypts user phrase
 void encrypt_phrase()
 {
     char invalid_char{};
-    std::cout << "Enter the number of encryption passes you would like: ";
-    int num_of_passes = valid_num_of_passes();
+    valid_number = 100;
+    std::cout << "\n--------------------------------------------" << std::endl;
+    std::cout << "||               *IMPORTANT*              ||" << std::endl;
+    std::cout << "--------------------------------------------" << std::endl;
+    std::cout << "Your current encryption key is" << std::endl;
+    std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
+    std::cout << active_key << std::endl;
+    std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
+    std::cout << "\nNote this down and keep it safe. Without this key future decryption will be impossible!" << std::endl;
+    std::cout << "\nEnter the number of encryption passes you would like: ";
+    int num_of_passes = valid_num();
     clear();
     for (int x {0}; x < num_of_passes; ++x)
     {
         bool success{ false };
         for (size_t i{ 0 }; i < user_phrase.length(); ++i)
         {
-            const size_t position = alphabet.find(user_phrase.at(i));
-            if (position > alphabet.length())
+            const size_t position = active_chars.find(user_phrase.at(i));
+            if (position > active_chars.length())
             {
                 invalid_char = user_phrase.at(i);
                 success = false;
             }
-            if (i != std::string::npos && position <= alphabet.length())
+            if (i != std::string::npos && position <= active_chars.length())
             {
                 success = true;
             }
@@ -162,10 +252,10 @@ void encrypt_phrase()
         {
             for (size_t i{ 0 }; i < user_phrase.length(); ++i)
             {
-                const size_t position = alphabet.find(user_phrase.at(i));
+                const size_t position = active_chars.find(user_phrase.at(i));
                 if (i != std::string::npos)
                 {
-                    user_phrase.at(i) = key.at(position);
+                    user_phrase.at(i) = active_key.at(position);
                 }
             }
         }
@@ -185,7 +275,7 @@ void encrypt_phrase()
     if (num_of_passes == 1)
     {
 	    std::cout << "*1 encryption pass complete*" << std::endl;
-        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
         std::cout << "||             Phrase encrypted           ||" << std::endl;
         std::cout << "||               successfully!            ||" << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
@@ -193,7 +283,7 @@ void encrypt_phrase()
     if(num_of_passes > 1)
     {
 	    std::cout << "\n*" << num_of_passes << " encryption passes complete*" << std::endl;
-        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
         std::cout << "||             Phrase encrypted           ||" << std::endl;
         std::cout << "||               successfully!            ||" << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
@@ -203,24 +293,25 @@ void encrypt_phrase()
 //Decrypts user phrase
 void decrypt_phrase()
 {
+    valid_number = 100;
     bool success{ false };
     char invalid_char{};
-    std::cout << "Enter the number of decryption passes you would like: ";
-    int num_of_passes = valid_num_of_passes();
+    std::cout << "\nEnter the number of decryption passes you would like: ";
+    int num_of_passes = valid_num();
     clear();
     for (int x{ 0 }; x < num_of_passes; ++x)
     {
         for (size_t i { 0 }; i < user_phrase.length(); ++i)
         {
-            const size_t position = key.find(user_phrase.at(i));
+            const size_t position = active_key.find(user_phrase.at(i));
             const char letter = user_phrase.at(i);
-            if (position > key.length() || key.find(letter) == std::string::npos)
+            if (position > active_key.length() || active_key.find(letter) == std::string::npos)
             {
                 invalid_char = user_phrase.at(i);
             	success = false;
                 break;
             }
-            if (position <= key.length())
+            if (position <= active_key.length())
             {
                 success = true;
             }
@@ -229,10 +320,10 @@ void decrypt_phrase()
         {
             for (size_t i{ 0 }; i < user_phrase.length(); ++i)
             {
-                const size_t position = key.find(user_phrase.at(i));
+                const size_t position = active_key.find(user_phrase.at(i));
                 if (i != std::string::npos)
                 {
-                    user_phrase.at(i) = alphabet.at(position);
+                    user_phrase.at(i) = active_chars.at(position);
                 }
             }
         }
@@ -254,7 +345,7 @@ void decrypt_phrase()
     if (num_of_passes == 1)
     {
         std::cout << "\n*1 decryption pass complete*" << std::endl;
-        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
         std::cout << "||             Phrase decrypted           ||" << std::endl;
         std::cout << "||               successfully!            ||" << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
@@ -262,7 +353,7 @@ void decrypt_phrase()
     if (num_of_passes > 1)
     {
         std::cout << "\n*" << num_of_passes << " decryption passes complete*" << std::endl;
-        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
         std::cout << "||             Phrase decrypted           ||" << std::endl;
         std::cout << "||               successfully!            ||" << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
@@ -275,7 +366,8 @@ void clear_phrase()
     std::string user_selection{};
     std::cout << "\nAre you sure you would like to clear your stored phrase?" << std::endl;
     std::cout << "\nIf yes press 'Y' or press 'N' to return to the menu : ";
-    user_selection = valid_continue();
+    valid_menu_option = "yYnN";
+    user_selection = valid_char();
     clear();
     if (user_selection == "y" || user_selection == "Y")
     {
@@ -294,10 +386,17 @@ void process_user_inputs()
     while (running)
     {
         print_menu();
-        user_selection = valid_menu_choice();
+        valid_number = 0;
+        valid_menu_option = "kKsSeEdDcCqQ";
+        user_selection = valid_char();
         clear();
         while (running)
         {
+            if (user_selection == "k" || user_selection == "K")
+            {
+                encryption_key();
+                break;
+            }
             if (user_selection == "s" || user_selection == "S")
             {
                 store_user_phrase();
@@ -328,6 +427,7 @@ void process_user_inputs()
 
 int main()
 {
+    active_key = random_key();
     std::cout << "\nWelcome to the Substitution Cipher" << std::endl;
     process_user_inputs();
     std::cout << "\nGoodbye!" << std::endl;
