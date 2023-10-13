@@ -30,6 +30,52 @@ std::string random_key()
     return chars;
 }
 
+//Pauses execution until user input
+void pause()
+{
+    std::cin.clear();
+    std::cin.sync();
+    std::cin.get();
+}
+
+//Clears console screen
+void clear()
+{
+    std::cout << "\x1B[2J\x1B[H";
+}
+
+//checks for valid character
+std::string valid_char()
+{
+    std::string valid_options{};
+    valid_options = valid_menu_option;
+    std::string input{};
+    std::cin >> input;
+    while (input.size() != 1 || valid_options.find(input) == std::string::npos)
+    {
+        std::cin.clear();
+        std::cout << "\nInput invalid, please enter a valid character : ";
+        std::cin >> input;
+    }
+    return input;
+}
+
+//checks for valid number
+int valid_num()
+{
+	const int valid_num_max = valid_number;
+    int input{};
+    std::cin >> input;
+    while (std::cin.fail() || input >= valid_num_max)
+    {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cout << "\nInput invalid, please enter a valid number below 100: ";
+        std::cin >> input;
+    }
+    return input;
+}
+
 //Prints no phrase stored warning
 void no_phrase()
 {
@@ -79,52 +125,6 @@ void current_key()
     std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
     std::cout << active_key << std::endl;
     std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
-}
-
-//Pauses execution until user input
-void pause()
-{
-    std::cin.clear();
-    std::cin.sync();
-    std::cin.get();
-}
-
-//Clears console screen
-void clear()
-{
-    std::cout << "\x1B[2J\x1B[H";
-}
-
-//checks for valid character
-std::string valid_char()
-{
-    std::string valid_options{};
-    valid_options = valid_menu_option;
-    std::string input{};
-    std::cin >> input;
-    while (input.size() != 1 || valid_options.find(input) == std::string::npos)
-    {
-        std::cin.clear();
-        std::cout << "\nInput invalid, please enter a valid character : ";
-        std::cin >> input;
-    }
-    return input;
-}
-
-//checks for valid number
-int valid_num()
-{
-	const int valid_num_max = valid_number;
-    int input{};
-    std::cin >> input;
-    while (std::cin.fail() || input >= valid_num_max)
-    {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "\nInput invalid, please enter a valid number below 100: ";
-        std::cin >> input;
-    }
-    return input;
 }
 
 //Prints Menu to console
