@@ -261,7 +261,6 @@ void encryption_key()
 //Encrypts user phrase
 void encrypt_phrase()
 {
-    //char invalid_char{};
     valid_number = 100;
     std::cout << "\n--------------------------------------------" << std::endl;
     std::cout << "||               *IMPORTANT*              ||" << std::endl;
@@ -322,7 +321,6 @@ void decrypt_phrase()
 {
     valid_number = 100;
     bool success{ false };
-    char invalid_char{};
     std::cout << "\nEnter the number of decryption passes you would like: ";
     int num_of_passes = valid_num();
     clear();
@@ -334,7 +332,7 @@ void decrypt_phrase()
             const char letter = user_phrase.at(i);
             if (position > active_key.length() || active_key.find(letter) == std::string::npos)
             {
-                invalid_char = user_phrase.at(i);
+                invalid_character = user_phrase.at(i);
             	success = false;
                 break;
             }
