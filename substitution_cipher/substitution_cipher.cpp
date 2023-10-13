@@ -321,6 +321,7 @@ void decrypt_phrase()
 {
     valid_number = 100;
     bool success{ false };
+    current_key();
     std::cout << "\nEnter the number of decryption passes you would like: ";
     int num_of_passes = valid_num();
     clear();
@@ -416,22 +417,22 @@ void process_user_inputs()
                 store_user_phrase();
                 break;
             }
-            if (!user_phrase.empty() && user_selection == "e" || user_selection == "E")
+            if (!user_phrase.empty() && user_selection == "e" || !user_phrase.empty() && user_selection == "E")
             {
                 encrypt_phrase();
                 break;
             }
-            if (user_phrase.empty() && user_selection == "e" || user_selection == "E")
+            if (user_phrase.empty() && user_selection == "e" || user_phrase.empty() && user_selection == "E")
             {
                 no_phrase();
                 break;
             }
-            if (!user_phrase.empty() && user_selection == "d" || user_selection == "D")
+            if (!user_phrase.empty() && user_selection == "d" || !user_phrase.empty() && user_selection == "D")
             {
                 decrypt_phrase();
                 break;
             }
-            if (user_phrase.empty() && user_selection == "d" || user_selection == "D")
+            if (user_phrase.empty() && user_selection == "d" || user_phrase.empty() && user_selection == "D")
             {
                 no_phrase();
                 break;
