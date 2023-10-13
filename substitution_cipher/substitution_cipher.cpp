@@ -4,7 +4,7 @@
 #include <random>
 
 //Stores User Phrase
-std::string user_phrase{};
+std::string user_phrase;
 
 //Valid menu options
 std::string valid_menu_option{};
@@ -402,14 +402,36 @@ void process_user_inputs()
                 store_user_phrase();
                 break;
             }
-            if (user_selection == "e" || user_selection == "E")
+            if (!user_phrase.empty() && user_selection == "e" || user_selection == "E")
             {
                 encrypt_phrase();
                 break;
             }
-            if (user_selection == "d" || user_selection == "D")
+            if (user_phrase.empty() && user_selection == "e" || user_selection == "E")
+            {
+                std::cout << "\n--------------------------------------------" << std::endl;
+                std::cout << "||                 Whoops!                ||" << std::endl;
+                std::cout << "||            No phrase stored            ||" << std::endl;
+                std::cout << "||          please enter a phrase         ||" << std::endl;
+                std::cout << "||             using option 'S'           ||" << std::endl;
+                std::cout << "||              and try again             ||" << std::endl;
+                std::cout << "--------------------------------------------" << std::endl;
+                break;
+            }
+            if (!user_phrase.empty() && user_selection == "d" || user_selection == "D")
             {
                 decrypt_phrase();
+                break;
+            }
+            if (user_phrase.empty() && user_selection == "d" || user_selection == "D")
+            {
+                std::cout << "\n--------------------------------------------" << std::endl;
+                std::cout << "||                 Whoops!                ||" << std::endl;
+                std::cout << "||            No phrase stored            ||" << std::endl;
+                std::cout << "||          please enter a phrase         ||" << std::endl;
+                std::cout << "||             using option 'S'           ||" << std::endl;
+                std::cout << "||              and try again             ||" << std::endl;
+                std::cout << "--------------------------------------------" << std::endl;
                 break;
             }
             if (user_selection == "c" || user_selection == "C")
