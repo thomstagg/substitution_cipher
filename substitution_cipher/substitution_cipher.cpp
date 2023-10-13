@@ -2,6 +2,7 @@
 #include <string>
 #include <limits>
 #include <random>
+#include <algorithm>
 
 //Stores User Phrase
 std::string user_phrase;
