@@ -251,14 +251,13 @@ void encryption_key()
 //Encrypts user phrase
 void encrypt_phrase()
 {
-    std::string user_selection{};
     std::cout << "\n--------------------------------------------" << std::endl;
     std::cout << "||               *IMPORTANT*              ||" << std::endl;
     std::cout << "--------------------------------------------" << std::endl;
     current_key();
     std::cout << "\nNote this key down and keep it safe. Without this key future decryption will be impossible!" << std::endl;
     std::cout << "\nWhen ready to proceed press 'Y': ";
-    user_selection = valid_char("yY");
+    std::string user_selection = valid_char("yY");
     clear();
     std::cout << "\nEnter the number of encryption passes you would like: ";
     int num_of_passes = valid_num(100);
