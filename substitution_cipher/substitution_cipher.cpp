@@ -7,12 +7,6 @@
 //Stores User Phrase
 std::string user_phrase;
 
-//Valid menu options
-std::string valid_menu_option{};
-
-//Stores invalid number
-int valid_number{};
-
 //Stores invalid char
 char invalid_character{};
 
@@ -45,10 +39,10 @@ void clear()
 }
 
 //checks for valid character
-std::string valid_char()
+std::string valid_char(std::string valid_character)
 {
     std::string valid_options{};
-    valid_options = valid_menu_option;
+    valid_options = std::move(valid_character);
     std::string input{};
     std::cin >> input;
     while (input.size() != 1 || valid_options.find(input) == std::string::npos)
@@ -61,7 +55,7 @@ std::string valid_char()
 }
 
 //checks for valid number
-int valid_num()
+int valid_num(const int valid_number)
 {
 	const int valid_num_max = valid_number;
     int input{};
@@ -70,7 +64,7 @@ int valid_num()
     {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "\nInput invalid, please enter a valid number below 100: ";
+        std::cout << "\nInput invalid, please enter a valid number below " << valid_num_max << " : ";
         std::cin >> input;
     }
     return input;
@@ -201,12 +195,10 @@ void encryption_key()
         current_key();
         std::cout << "\nWould you like to generate a new key or enter an existing one?" << std::endl;
     	std::cout << "\nEnter 'Y' to proceed or 'N' to keep the current key and return to the menu: ";
-        valid_menu_option = "yYnN";
-        user_selection = valid_char();
+        user_selection = valid_char("yYnN");
         if (user_selection == "y" || user_selection == "Y")
         {
             clear();
-            valid_menu_option = "12";
             std::cout << "\nPlease choose from the following options" << std::endl;
             std::cout << "\n--------------------------------------------" << std::endl;
             std::cout << "--------------------------------------------" << std::endl;
@@ -217,7 +209,7 @@ void encryption_key()
             std::cout << "--------------------------------------------" << std::endl;
             std::cout << "--------------------------------------------" << std::endl;
             std::cout << "Enter your choice: ";
-            user_selection = valid_char();
+            user_selection = valid_char("12");
             if(user_selection == "1")
             {
                 clear();
@@ -225,8 +217,7 @@ void encryption_key()
                 std::cout << "New key generated successfully!" << std::endl;
                 current_key();
                 std::cout << "\nPress 'Y' to continue: ";
-                valid_menu_option = "yYnN";
-                user_selection = valid_char();
+                user_selection = valid_char("yYnN");
                 if (user_selection == "y" || user_selection == "Y")
                 {
                     clear();
@@ -244,8 +235,7 @@ void encryption_key()
                 std::cout << "Encryption key updated successfully!";
                 current_key();
                 std::cout << "\nPress 'Y' to continue: ";
-                valid_menu_option = "yYnN";
-                user_selection = valid_char();
+                user_selection = valid_char("yYnN");
                 if (user_selection == "y" || user_selection == "Y")
                 {
                     clear();
@@ -261,14 +251,17 @@ void encryption_key()
 //Encrypts user phrase
 void encrypt_phrase()
 {
-    valid_number = 100;
+    std::string user_selection{};
     std::cout << "\n--------------------------------------------" << std::endl;
     std::cout << "||               *IMPORTANT*              ||" << std::endl;
     std::cout << "--------------------------------------------" << std::endl;
     current_key();
-    std::cout << "\nNote this down and keep it safe. Without this key future decryption will be impossible!" << std::endl;
+    std::cout << "\nNote this key down and keep it safe. Without this key future decryption will be impossible!" << std::endl;
+    std::cout << "\nWhen ready to proceed press 'Y': ";
+    user_selection = valid_char("yY");
+    clear();
     std::cout << "\nEnter the number of encryption passes you would like: ";
-    int num_of_passes = valid_num();
+    int num_of_passes = valid_num(100);
     clear();
     for (int x {0}; x < num_of_passes; ++x)
     {
@@ -319,11 +312,10 @@ void encrypt_phrase()
 //Decrypts user phrase
 void decrypt_phrase()
 {
-    valid_number = 100;
     bool success{ false };
     current_key();
     std::cout << "\nEnter the number of decryption passes you would like: ";
-    int num_of_passes = valid_num();
+    int num_of_passes = valid_num(100);
     clear();
     for (int x{ 0 }; x < num_of_passes; ++x)
     {
@@ -381,8 +373,7 @@ void clear_phrase()
     std::string user_selection{};
     std::cout << "\nAre you sure you would like to clear your stored phrase?" << std::endl;
     std::cout << "\nIf yes press 'Y' or press 'N' to return to the menu : ";
-    valid_menu_option = "yYnN";
-    user_selection = valid_char();
+    user_selection = valid_char("yYnN");
     clear();
     if (user_selection == "y" || user_selection == "Y")
     {
@@ -401,9 +392,7 @@ void process_user_inputs()
     while (running)
     {
         print_menu();
-        valid_number = 0;
-        valid_menu_option = "kKsSeEdDcCqQ";
-        user_selection = valid_char();
+        user_selection = valid_char("kKsSeEdDcCqQ");
         clear();
         while (running)
         {
