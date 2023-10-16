@@ -18,5 +18,22 @@
     <ClCompile Include="substitution_cipher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="print_messages.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="print_messages.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="application.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
