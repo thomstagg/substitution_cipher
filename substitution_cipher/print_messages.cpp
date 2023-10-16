@@ -1,11 +1,9 @@
 #include "print_messages.h"
+#include "application.h"
 
 #include <iostream>
 #include <string>
-#include <limits>
 #include <random>
-#include <algorithm>
-
 
 //Prints no phrase stored warning
 void print_messages::print_no_phrase()
@@ -43,7 +41,7 @@ void print_messages::print_char_not_in_key()
     std::cout << "\n--------------------------------------------" << std::endl;
     std::cout << "||                 Whoops!                ||" << std::endl;
     std::cout << "||        Encryption not possible as      ||" << std::endl;
-    std::cout << "||  the character " << invalid_character << " was not found in key! ||" << std::endl;
+    std::cout << "||  the character " << invalid_char << " was not found in key! ||" << std::endl;
     std::cout << "||        please clear stored phrase      ||" << std::endl;
     std::cout << "||              and try again             ||" << std::endl;
     std::cout << "--------------------------------------------" << std::endl;

@@ -131,7 +131,6 @@
     <ClCompile Include="application.cpp" />
     <ClCompile Include="print_messages.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="substitution_cipher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />

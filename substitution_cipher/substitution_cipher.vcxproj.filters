@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="substitution_cipher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="print_messages.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -29,10 +26,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="print_messages.h">
+    <ClInclude Include="application.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="application.h">
+    <ClInclude Include="print_messages.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
