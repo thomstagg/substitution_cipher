@@ -131,10 +131,12 @@
     <ClCompile Include="application.cpp" />
     <ClCompile Include="print_messages.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="string_handling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
     <ClInclude Include="print_messages.h" />
+    <ClInclude Include="string_handling.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,12 +24,18 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="string_handling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="print_messages.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="string_handling.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

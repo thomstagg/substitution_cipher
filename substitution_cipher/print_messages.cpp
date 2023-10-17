@@ -1,9 +1,9 @@
 #include "print_messages.h"
-#include "application.h"
-
+#include "string_handling.h"
 #include <iostream>
-#include <string>
-#include <random>
+
+
+//application application;
 
 //Prints no phrase stored warning
 void print_messages::print_no_phrase()
@@ -59,6 +59,7 @@ void print_messages::print_current_key()
 //Prints Menu to console
 void print_messages::print_menu()
 {
+    std::cout << "\nWelcome to the Substitution Cipher" << std::endl;
     if (user_phrase.length() == 0)
     {
         std::cout << "\n--------------------------------------------" << std::endl;
@@ -72,7 +73,6 @@ void print_messages::print_menu()
         std::cout << "Stored Phrase : " << user_phrase << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
     }
-    active_chars = char_list;
     std::cout << "\nPlease choose from the following options" << std::endl;
     std::cout << "\n--------------------------------------------" << std::endl;
     std::cout << "--------------------------------------------" << std::endl;
