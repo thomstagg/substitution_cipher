@@ -3,7 +3,7 @@
 #include <random>
 #include <algorithm>
 #include "print_messages.h"
-#include "application.h"
+#include "user_input_handling.h"
 #include "string_handling.h"
 
 std::string char_list{ "!@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" };
@@ -12,7 +12,7 @@ std::string active_key{};
 std::string user_phrase{};
 char invalid_char;
 
-application application;
+user_input_handling user_input_handling;
 
 void string_handling::init_active_chars()
 {
@@ -52,10 +52,10 @@ void string_handling::store_user_phrase()
         while (running)
         {
             std::cout << "Enter the word or phrase you would like to be encrypted or decrypted" << std::endl;
-            std::cout << "Your Phrase: ";
-            application::pause();
+            std::cout << "\nYour Phrase: ";
+            user_input_handling::pause();
             std::getline(std::cin, user_phrase);
-            application::clear();
+            user_input_handling::clear();
             if (user_phrase.length() > 0)
             {
                 std::cout << "\n--------------------------------------------" << std::endl;
@@ -78,10 +78,10 @@ void string_handling::encryption_key()
         print_messages::print_current_key();
         std::cout << "\nWould you like to generate a new key or enter an existing one?" << std::endl;
         std::cout << "\nEnter 'Y' to proceed or 'N' to keep the current key and return to the menu: ";
-        user_selection = application::valid_char("yYnN");
+        user_selection = user_input_handling::valid_char("yYnN");
         if (user_selection == "y" || user_selection == "Y")
         {
-            application::clear();
+            user_input_handling::clear();
             std::cout << "\nPlease choose from the following options" << std::endl;
             std::cout << "\n--------------------------------------------" << std::endl;
             std::cout << "--------------------------------------------" << std::endl;
@@ -92,41 +92,41 @@ void string_handling::encryption_key()
             std::cout << "--------------------------------------------" << std::endl;
             std::cout << "--------------------------------------------" << std::endl;
             std::cout << "Enter your choice: ";
-            user_selection = application::valid_char("12");
+            user_selection = user_input_handling::valid_char("12");
             if (user_selection == "1")
             {
-                application::clear();
+                user_input_handling::clear();
                 random_key();
                 std::cout << "New key generated successfully!" << std::endl;
                 print_messages::print_current_key();
                 std::cout << "\nPress 'Y' to continue: ";
-                user_selection = application::valid_char("yYnN");
+                user_selection = user_input_handling::valid_char("yYnN");
                 if (user_selection == "y" || user_selection == "Y")
                 {
-                    application::clear();
+                    user_input_handling::clear();
                     break;
                 }
             }
             if (user_selection == "2")
             {
-                application::clear();
+                user_input_handling::clear();
                 std::cout << "Enter your encryption key below" << std::endl;
                 std::cout << "\nYour key: ";
-                application::pause();
+                user_input_handling::pause();
                 std::getline(std::cin, active_key);
-                application::clear();
+                user_input_handling::clear();
                 std::cout << "Encryption key updated successfully!";
                 print_messages::print_current_key();
                 std::cout << "\nPress 'Y' to continue: ";
-                user_selection = application::valid_char("yYnN");
+                user_selection = user_input_handling::valid_char("yYnN");
                 if (user_selection == "y" || user_selection == "Y")
                 {
-                    application::clear();
+                    user_input_handling::clear();
                     break;
                 }
             }
         }
-        application::clear();
+        user_input_handling::clear();
         running = false;
     }
 }
@@ -158,17 +158,17 @@ void string_handling::encrypt_phrase()
         print_messages::print_current_key();
         std::cout << "\nNote this key down and keep it safe. Without this key future decryption will be impossible!" << std::endl;
         std::cout << "\nWhen ready to proceed press 'Y' or to cancel press 'N': ";
-        std::string user_selection = application::valid_char("yYnN");
+        std::string user_selection = user_input_handling::valid_char("yYnN");
         if (user_selection == "n" || user_selection == "N")
         {
             running = false;
         }
         if (user_selection == "y" || user_selection == "Y")
         {
-            application::clear();
+            user_input_handling::clear();
             std::cout << "\nEnter the number of encryption passes you would like: ";
-            int num_of_passes = application::valid_num(100);
-            application::clear();
+            int num_of_passes = user_input_handling::valid_num(100);
+            user_input_handling::clear();
             for (int x{ 0 }; x < num_of_passes; ++x)
             {
                 bool success{ false };
@@ -189,8 +189,6 @@ void string_handling::encrypt_phrase()
                 {
                     active_chars = encrypt_decrypt(active_chars, char_list, active_key, active_key);
                     user_phrase = encrypt_decrypt(user_phrase, active_chars, user_phrase, active_key);
-                    std::cout << "active chars " << active_chars << std::endl;
-                    application::pause();
                     running = false;
                 }
                 else
@@ -223,8 +221,8 @@ void string_handling::decrypt_phrase()
         bool success{ false };
         print_messages::print_current_key();
         std::cout << "\nEnter the number of decryption passes you would like: ";
-        int num_of_passes = application::valid_num(100);
-        application::clear();
+        int num_of_passes = user_input_handling::valid_num(100);
+        user_input_handling::clear();
         active_chars = encrypt_decrypt(active_chars, char_list, active_key, active_key);
         for (int x{ 0 }; x < num_of_passes; ++x)
         {
@@ -277,8 +275,8 @@ void string_handling::clear_phrase()
     std::string user_selection{};
     std::cout << "\nAre you sure you would like to clear your stored phrase?" << std::endl;
     std::cout << "\nIf yes press 'Y' or press 'N' to return to the menu : ";
-    user_selection = application::valid_char("yYnN");
-    application::clear();
+    user_selection = user_input_handling::valid_char("yYnN");
+    user_input_handling::clear();
     if (user_selection == "y" || user_selection == "Y")
     {
         user_phrase = {};

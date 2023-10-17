@@ -3,11 +3,11 @@
 #include <limits>
 #include <random>
 #include "print_messages.h"
-#include "application.h"
+#include "user_input_handling.h"
 #include "string_handling.h"
 
 //Pauses execution until user input
-void application::pause()
+void user_input_handling::pause()
 {
     std::cin.clear();
     std::cin.sync();
@@ -15,13 +15,13 @@ void application::pause()
 }
 
 //Clears console screen
-void application::clear()
+void user_input_handling::clear()
 {
     std::cout << "\x1B[2J\x1B[H";
 }
 
 //checks for valid character
-std::string application::valid_char(const std::string& input_valid_character)
+std::string user_input_handling::valid_char(const std::string& input_valid_character)
 {
     std::string input{};
     std::cin >> input;
@@ -35,7 +35,7 @@ std::string application::valid_char(const std::string& input_valid_character)
 }
 
 //checks for valid number
-int application::valid_num(const int input_max_number)
+int user_input_handling::valid_num(const int input_max_number)
 {
     int input{};
     std::cin >> input;
@@ -50,19 +50,15 @@ int application::valid_num(const int input_max_number)
 }
 
 //Processes all user inputs until valid quit key is detected
-void application::process_user_inputs()
+void user_input_handling::process_user_inputs()
 {
-    application application;
+    user_input_handling user_input_handling;
     std::string user_selection{};
     bool running{ true };
     while (running)
     {
-        string_handling::init_active_chars();
-        string_handling::random_key();
-        std::cout << "char list " << char_list << std::endl;
-        std::cout << "active chars " << active_chars << std::endl;
     	print_messages::print_menu();
-        user_selection = application.valid_char("kKsSeEdDcCqQ");
+        user_selection = user_input_handling.valid_char("kKsSeEdDcCqQ");
         clear();
         while (running)
         {

@@ -18,7 +18,7 @@
     <ClCompile Include="print_messages.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="application.cpp">
+    <ClCompile Include="user_input_handling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -29,7 +29,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="application.h">
+    <ClInclude Include="user_input_handling.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="print_messages.h">

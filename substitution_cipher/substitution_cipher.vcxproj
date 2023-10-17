@@ -128,13 +128,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="application.cpp" />
+    <ClCompile Include="user_input_handling.cpp" />
     <ClCompile Include="print_messages.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="string_handling.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="application.h" />
+    <ClInclude Include="user_input_handling.h" />
     <ClInclude Include="print_messages.h" />
     <ClInclude Include="string_handling.h" />
   </ItemGroup>

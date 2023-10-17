@@ -3,7 +3,7 @@
 #include<iostream>
 #include <string>
 
-class application
+class user_input_handling
 {
 public:
 	static void process_user_inputs();
