@@ -2,9 +2,6 @@
 #include "string_handling.h"
 #include <iostream>
 
-
-//application application;
-
 //Prints no phrase stored warning
 void print_messages::print_no_phrase()
 {

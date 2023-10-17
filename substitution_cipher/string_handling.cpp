@@ -14,11 +14,11 @@ char invalid_char;
 
 user_input_handling user_input_handling;
 
+//Initialises active chars to what is in the current char list.
 void string_handling::init_active_chars()
 {
     active_chars = char_list;
 }
-
 
 //Generates random key using characters in active_chars
  std::string return_random_key(std::string input_string)
