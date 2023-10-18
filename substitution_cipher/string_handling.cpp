@@ -7,7 +7,6 @@
 #include "string_handling.h"
 
 //Variables initialized
-std::vector<char> string_handling::stored_string{};
 std::string string_handling::default_chars{ "!@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" };
 std::string string_handling::char_list_string = default_chars;
 std::string string_handling::active_chars_string = default_chars;
