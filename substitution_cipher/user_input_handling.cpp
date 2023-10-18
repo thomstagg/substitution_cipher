@@ -72,22 +72,22 @@ void user_input_handling::process_user_inputs()
                 string_handling::store_user_phrase();
                 break;
             }
-            if (!user_phrase.empty() && user_selection == "e" || !user_phrase.empty() && user_selection == "E")
+            if (!string_handling::user_phrase_string.empty() && user_selection == "e" || !string_handling::user_phrase_string.empty() && user_selection == "E")
             {
                 string_handling::encrypt_phrase();
                 break;
             }
-            if (user_phrase.empty() && user_selection == "e" || user_phrase.empty() && user_selection == "E")
+            if (string_handling::user_phrase_string.empty() && user_selection == "e" || string_handling::user_phrase_string.empty() && user_selection == "E")
             {
                 print_messages::print_no_phrase();
                 break;
             }
-            if (!user_phrase.empty() && user_selection == "d" || !user_phrase.empty() && user_selection == "D")
+            if (!string_handling::user_phrase_string.empty() && user_selection == "d" || !string_handling::user_phrase_string.empty() && user_selection == "D")
             {
                 string_handling::decrypt_phrase();
                 break;
             }
-            if (user_phrase.empty() && user_selection == "d" || user_phrase.empty() && user_selection == "D")
+            if (string_handling::user_phrase_string.empty() && user_selection == "d" || string_handling::user_phrase_string.empty() && user_selection == "D")
             {
                 print_messages::print_no_phrase();
                 break;

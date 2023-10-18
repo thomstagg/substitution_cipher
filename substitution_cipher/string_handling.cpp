@@ -6,19 +6,14 @@
 #include "user_input_handling.h"
 #include "string_handling.h"
 
-std::string char_list{ "!@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" };
-std::string active_chars{};
-std::string active_key{};
-std::string user_phrase{};
-char invalid_char;
-
-user_input_handling user_input_handling;
-
-//Initialises active chars to what is in the current char list.
-void string_handling::init_active_chars()
-{
-    active_chars = char_list;
-}
+//Variables initialized
+std::vector<char> string_handling::stored_string{};
+std::string string_handling::default_chars{ "!@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" };
+std::string string_handling::char_list_string = default_chars;
+std::string string_handling::active_chars_string = default_chars;
+std::string string_handling::active_key_string{};
+std::string string_handling::user_phrase_string{};
+char string_handling::invalid_char{};
 
 //Generates random key using characters in active_chars
  std::string return_random_key(std::string input_string)
@@ -31,22 +26,23 @@ void string_handling::init_active_chars()
     return chars;
 }
 
+//Sets active_key_string to the randomly generated key from return_random_key
 void string_handling::random_key()
 {
-    active_key = return_random_key(active_chars);
+    active_key_string = return_random_key(char_list_string);
 }
 
 //Gets words from user to be stored in the user_phrase string
 void string_handling::store_user_phrase()
 {
-    if (user_phrase.length() > 0)
+    if (user_phrase_string.length() > 0)
     {
         std::cout << "\n--------------------------------------------" << std::endl;
         std::cout << "||             A word or phrase           ||" << std::endl;
         std::cout << "||            is already stored!          ||" << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
     }
-    if (user_phrase.length() == 0)
+    if (user_phrase_string.length() == 0)
     {
         bool running{ true };
         while (running)
@@ -54,9 +50,10 @@ void string_handling::store_user_phrase()
             std::cout << "Enter the word or phrase you would like to be encrypted or decrypted" << std::endl;
             std::cout << "\nYour Phrase: ";
             user_input_handling::pause();
-            std::getline(std::cin, user_phrase);
+            std::string get_user_phrase{};
+            std::getline(std::cin, user_phrase_string);
             user_input_handling::clear();
-            if (user_phrase.length() > 0)
+            if (user_phrase_string.length() > 0)
             {
                 std::cout << "\n--------------------------------------------" << std::endl;
                 std::cout << "||             Words or phrase            ||" << std::endl;
@@ -113,7 +110,7 @@ void string_handling::encryption_key()
                 std::cout << "Enter your encryption key below" << std::endl;
                 std::cout << "\nYour key: ";
                 user_input_handling::pause();
-                std::getline(std::cin, active_key);
+                std::getline(std::cin, active_key_string);
                 user_input_handling::clear();
                 std::cout << "Encryption key updated successfully!";
                 print_messages::print_current_key();
@@ -172,24 +169,24 @@ void string_handling::encrypt_phrase()
             for (int x{ 0 }; x < num_of_passes; ++x)
             {
                 bool success{ false };
-                for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+                for (size_t i{ 0 }; i < user_phrase_string.length(); ++i)
                 {
-                    const size_t position = active_chars.find(user_phrase.at(i));
-                    if (position > active_chars.length())
+                    const size_t position = active_chars_string.find(user_phrase_string.at(i));
+                    if (position > active_chars_string.length())
                     {
-                        invalid_char = user_phrase.at(i);
+                        invalid_char = user_phrase_string.at(i);
                         success = false;
                     }
-                    if (i != std::string::npos && position <= active_chars.length())
+                    if (i != std::string::npos && position <= active_chars_string.length())
                     {
                         success = true;
                     }
                 }
                 if (success)
                 {
-                    active_chars = encrypt_decrypt(active_chars, char_list, active_key, active_key);
-                    user_phrase = encrypt_decrypt(user_phrase, active_chars, user_phrase, active_key);
-                    running = false;
+                    active_chars_string = encrypt_decrypt(active_chars_string, char_list_string, active_key_string, active_key_string);
+                    user_phrase_string = encrypt_decrypt(user_phrase_string, active_chars_string, user_phrase_string, active_key_string);
+                	running = false;
                 }
                 else
                 {
@@ -223,27 +220,27 @@ void string_handling::decrypt_phrase()
         std::cout << "\nEnter the number of decryption passes you would like: ";
         int num_of_passes = user_input_handling::valid_num(100);
         user_input_handling::clear();
-        active_chars = encrypt_decrypt(active_chars, char_list, active_key, active_key);
+        active_chars_string = encrypt_decrypt(active_chars_string, char_list_string, active_key_string, active_key_string);
         for (int x{ 0 }; x < num_of_passes; ++x)
         {
-            for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+            for (size_t i{ 0 }; i < user_phrase_string.length(); ++i)
             {
-                const size_t position = active_key.find(user_phrase.at(i));
-                const char letter = user_phrase.at(i);
-                if (position > active_key.length() || active_key.find(letter) == std::string::npos)
+                const size_t position = active_key_string.find(user_phrase_string.at(i));
+                const char letter = user_phrase_string.at(i);
+                if (position > active_key_string.length() || active_key_string.find(letter) == std::string::npos)
                 {
-                    invalid_char = user_phrase.at(i);
+                    invalid_char = user_phrase_string.at(i);
                     success = false;
                     break;
                 }
-                if (position <= active_key.length())
+                if (position <= active_key_string.length())
                 {
                     success = true;
                 }
             }
             if (success)
             {
-                user_phrase = encrypt_decrypt(user_phrase, active_key, user_phrase, active_chars);
+                user_phrase_string = encrypt_decrypt(user_phrase_string, active_key_string, user_phrase_string, active_chars_string);
             	running = false;
             }
             if (success == false)
@@ -279,7 +276,7 @@ void string_handling::clear_phrase()
     user_input_handling::clear();
     if (user_selection == "y" || user_selection == "Y")
     {
-        user_phrase = {};
+        user_phrase_string = "";
         std::cout << "\n--------------------------------------------" << std::endl;
         std::cout << "||           cleared successfully!        ||" << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
