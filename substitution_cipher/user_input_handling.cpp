@@ -2,11 +2,13 @@
 #include <string>
 #include <limits>
 #include <random>
+
 #include "string_handling.h"
 #include "user_input_handling.h"
 #include "print_messages.h"
 
-
+//Create class instance
+user_input_handling* user_input_handling_main = new user_input_handling();
 
 //Pauses execution until user input
 void user_input_handling::pause()

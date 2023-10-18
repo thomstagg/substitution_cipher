@@ -2,9 +2,13 @@
 #include <string>
 #include <random>
 #include <algorithm>
-#include "print_messages.h"
-#include "user_input_handling.h"
+
 #include "string_handling.h"
+#include "user_input_handling.h"
+#include "print_messages.h"
+
+//Create class instance
+string_handling* string_handling_main = new string_handling();
 
 //Generates random key using characters in active_chars
 std::string return_random_key(std::string input_string)
@@ -100,7 +104,7 @@ void string_handling::encryption_key()
                 user_input_handling_main->clear();
                 std::cout << "Enter your encryption key below" << std::endl;
                 std::cout << "\nYour key: ";
-                user_input_handling_main->pause();;
+                user_input_handling_main->pause();
                 std::getline(std::cin, active_key_string);
                 user_input_handling_main->clear();
                 std::cout << "Encryption key updated successfully!";

@@ -1,7 +1,8 @@
-#include "print_messages.h"
 #include "string_handling.h"
+#include "print_messages.h"
 #include <iostream>
 
+string_handling string_handling;
 //Prints no phrase stored warning
 void print_messages::print_no_phrase()
 {
