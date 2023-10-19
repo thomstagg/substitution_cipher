@@ -2,7 +2,15 @@
 #include "print_messages.h"
 #include <iostream>
 
-string_handling string_handling;
+//Create class instance
+print_messages* print_messages_main = new print_messages();
+
+//Clears console screen
+void print_messages::clear()
+{
+    std::cout << "\x1B[2J\x1B[H";
+}
+
 //Prints no phrase stored warning
 void print_messages::print_no_phrase()
 {

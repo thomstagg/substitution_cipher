@@ -8,7 +8,6 @@ class user_input_handling
 public:
 	void process_user_inputs();
 	void pause();
-	void clear();
 
 	int valid_num(const int input_max_number);
 	std::string valid_char(const std::string& input_valid_character);

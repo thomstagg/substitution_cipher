@@ -18,12 +18,6 @@ void user_input_handling::pause()
     std::cin.get();
 }
 
-//Clears console screen
-void user_input_handling::clear()
-{
-    std::cout << "\x1B[2J\x1B[H";
-}
-
 //checks for valid character
 std::string user_input_handling::valid_char(const std::string& input_valid_character)
 {
@@ -61,9 +55,9 @@ void user_input_handling::process_user_inputs()
     bool running{ true };
     while (running)
     {
-        print_messages::print_menu();
+        print_messages_main->print_menu();
         user_selection = user_input_handling.valid_char("kKsSeEdDcCqQ");
-        clear();
+        print_messages_main->clear();
         while (running)
         {
             if (user_selection == "k" || user_selection == "K")
@@ -76,24 +70,28 @@ void user_input_handling::process_user_inputs()
                 string_handling_main->store_user_phrase();
                 break;
             }
-            if (!string_handling_main->user_phrase_string.empty() && user_selection == "e" || !string_handling_main->user_phrase_string.empty() && user_selection == "E")
+            if (!string_handling_main->user_phrase_string.empty() && user_selection == "e" 
+                || !string_handling_main->user_phrase_string.empty() && user_selection == "E")
             {
                 string_handling_main->encrypt_phrase();
                 break;
             }
-            if (string_handling_main->user_phrase_string.empty() && user_selection == "e" || string_handling_main->user_phrase_string.empty() && user_selection == "E")
+            if (string_handling_main->user_phrase_string.empty() && user_selection == "e" 
+                || string_handling_main->user_phrase_string.empty() && user_selection == "E")
             {
-                print_messages::print_no_phrase();
+                print_messages_main->print_no_phrase();
                 break;
             }
-            if (!string_handling_main->user_phrase_string.empty() && user_selection == "d" || !string_handling_main->user_phrase_string.empty() && user_selection == "D")
+            if (!string_handling_main->user_phrase_string.empty() && user_selection == "d" 
+                || !string_handling_main->user_phrase_string.empty() && user_selection == "D")
             {
                 string_handling_main->decrypt_phrase();
                 break;
             }
-            if (string_handling_main->user_phrase_string.empty() && user_selection == "d" || string_handling_main->user_phrase_string.empty() && user_selection == "D")
+            if (string_handling_main->user_phrase_string.empty() && user_selection == "d" 
+                || string_handling_main->user_phrase_string.empty() && user_selection == "D")
             {
-                print_messages::print_no_phrase();
+                print_messages_main->print_no_phrase();
                 break;
             }
             if (user_selection == "c" || user_selection == "C")
