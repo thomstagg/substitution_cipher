@@ -8,7 +8,7 @@ void console_out::message(std::string message_choice)
 {
     if(message_choice == "welcome_message")
     {
-        std::cout << "\nWelcome to the Substitution Cipher" << std::endl;
+        std::cout << "\nWelcome to the Substitution Cipher!" << std::endl;
         message_choice = "";
     }
 	if(message_choice == "no_phrase")
@@ -94,7 +94,7 @@ void console_out::message(std::string message_choice)
     }
     else if(message_choice.length() >= 1)
     {
-        std::cout << "*******DEBUG INCORRECT STRING INPUT INTO FUNCTION********" << std::endl;
+        std::cout << "*******DEBUG - INCORRECT STRING INPUT INTO FUNCTION********" << std::endl;
         message_choice = "";
     }
 }

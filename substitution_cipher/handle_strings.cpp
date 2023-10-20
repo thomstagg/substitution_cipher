@@ -134,17 +134,19 @@ void handle_strings::encrypt()
     {
         handle_console handle_console;
     	console_out console_out;
+        std::string user_selection{};
         console_out.print_current_key(active_key_, 1);
         console_out.message("yes_no");
-        std::string user_selection = handle_console.valid_char("yYnN");
+        user_selection = handle_console.valid_char("yYnN");
         if (user_selection == "n" || user_selection == "N")
         {
             running = false;
         }
         if (user_selection == "y" || user_selection == "Y")
         {
+            int num_of_passes{};
             console_out.message("encrypt_pass_num");
-            int num_of_passes = handle_console.valid_num(100);
+            num_of_passes = handle_console.valid_num(100);
             handle_console.clear();
             for (int x{ 0 }; x < num_of_passes; ++x)
             {
@@ -189,12 +191,13 @@ void handle_strings::decrypt()
     bool running{ true };
     while (running)
     {
+        handle_console handle_console;
         console_out console_out;
         bool success{ false };
+        int num_of_passes{};
         console_out.print_current_key(active_key_, 2);
         console_out.message("decrypt_pass_num");
-        handle_console handle_console;
-        int num_of_passes = handle_console.valid_num(100);
+        num_of_passes = handle_console.valid_num(100);
         handle_console.clear();
         active_chars_ = encrypt_decrypt(active_chars_, char_list_,
         active_key_, active_key_);
@@ -239,12 +242,12 @@ void handle_strings::decrypt()
 //Clears the user_phrase string
 void handle_strings::clear_phrase()
 {
+    handle_console handle_console;
     console_out console_out;
     std::string user_selection{};
     console_out.message("clear_phrase");
     console_out.message("yes_no");
-    handle_console handle_console;
-    user_selection = handle_console.valid_char("yYnN");
+	user_selection = handle_console.valid_char("yYnN");
     handle_console.clear();
     if (user_selection == "y" || user_selection == "Y")
     {

@@ -36,12 +36,22 @@ int handle_console::valid_num(const int input_max_number)
 {
     int input{};
     std::cin >> input;
-    while (std::cin.fail() || input > input_max_number)
+    while (std::cin.fail() || input > input_max_number || input < 1)
     {
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cout << "\nInput invalid, please enter a valid number below or equal to " << input_max_number << " : ";
-        std::cin >> input;
+        if (input > input_max_number)
+        {
+            std::cout << "\n*Input invalid, the number below or equal to " << input_max_number << "*" <<  std::endl;
+            std::cout << "\nPlease enter a number: ";
+            std::cin >> input;
+        }
+		if(input < 1)
+		{
+            std::cout << "\n*Input invalid, minimum number is 1*" << std::endl;
+            std::cout << "\nPlease enter a number: ";
+            std::cin >> input;
+		}
     }
     return input;
 }
