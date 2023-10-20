@@ -1,9 +1,8 @@
-#include "string_handling.h"
-#include "user_input_handling.h"
+#include "app.h"
 
 int main()
 {
-	string_handling_main->random_key();
-	user_input_handling_main->process_user_inputs();
+	app app;
+	app.init();
 	return 0;
 }
