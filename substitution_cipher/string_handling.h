@@ -1,22 +1,23 @@
 #pragma once
 
 #include <string>
-#include <vector>
 
 class string_handling
 {
 public:
-	static void random_key();
-	static void store_user_phrase();
-	static void encryption_key();
-	static void encrypt_phrase();
-	static void decrypt_phrase();
-	static void clear_phrase();
+	void random_key();
+	void store_user_phrase();
+	void encryption_key();
+	void encrypt_phrase();
+	void decrypt_phrase();
+	void clear_phrase();
 
-	static std::string default_chars;
-	static std::string char_list_string;
-	static std::string active_chars_string;
-	static std::string active_key_string;
-	static std::string user_phrase_string;
-	static char invalid_char;
+	std::string default_chars{ "!@#$%^&*()_+-={}[]:;',.<>/?|`~abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" };
+	std::string char_list_string = default_chars;
+	std::string active_chars_string = default_chars;
+	std::string active_key_string;
+	std::string user_phrase_string;
+	char invalid_char;
 };
+
+extern string_handling* string_handling_main;

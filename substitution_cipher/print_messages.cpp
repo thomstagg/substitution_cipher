@@ -1,6 +1,15 @@
-#include "print_messages.h"
 #include "string_handling.h"
+#include "print_messages.h"
 #include <iostream>
+
+//Create class instance
+print_messages* print_messages_main = new print_messages();
+
+//Clears console screen
+void print_messages::clear()
+{
+    std::cout << "\x1B[2J\x1B[H";
+}
 
 //Prints no phrase stored warning
 void print_messages::print_no_phrase()
@@ -38,7 +47,7 @@ void print_messages::print_char_not_in_key()
     std::cout << "\n--------------------------------------------" << std::endl;
     std::cout << "||                 Whoops!                ||" << std::endl;
     std::cout << "||        Encryption not possible as      ||" << std::endl;
-    std::cout << "||  the character " << string_handling::invalid_char << " was not found in key! ||" << std::endl;
+    std::cout << "||  the character " << string_handling_main->invalid_char << " was not found in key! ||" << std::endl;
     std::cout << "||        please clear stored phrase      ||" << std::endl;
     std::cout << "||              and try again             ||" << std::endl;
     std::cout << "--------------------------------------------" << std::endl;
@@ -49,7 +58,7 @@ void print_messages::print_current_key()
 {
     std::cout << "\nThe current encryption key is" << std::endl;
     std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
-    std::cout << string_handling::active_key_string << std::endl;
+    std::cout << string_handling_main->active_key_string << std::endl;
     std::cout << "-------------------------------------------------------------------------------------------------" << std::endl;
 }
 
@@ -57,7 +66,7 @@ void print_messages::print_current_key()
 void print_messages::print_menu()
 {
     std::cout << "\nWelcome to the Substitution Cipher" << std::endl;
-    if (string_handling::user_phrase_string.length() == 0)
+    if (string_handling_main->user_phrase_string.length() == 0)
     {
         std::cout << "\n--------------------------------------------" << std::endl;
         std::cout << "You currently have no phrase stored" << std::endl;
@@ -67,7 +76,7 @@ void print_messages::print_menu()
     else
     {
         std::cout << "\n--------------------------------------------" << std::endl;
-        std::cout << "Stored Phrase : " << string_handling::user_phrase_string << std::endl;
+        std::cout << "Stored Phrase : " << string_handling_main->user_phrase_string << std::endl;
         std::cout << "--------------------------------------------" << std::endl;
     }
     std::cout << "\nPlease choose from the following options" << std::endl;
