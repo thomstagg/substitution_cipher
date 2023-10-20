@@ -6,12 +6,8 @@
 #include <random>
 #include <algorithm>
 
-handle_strings::handle_strings(std::string* user_phrase_string, std::string* active_key_string, char* invalid_char):
-    user_phrase_(user_phrase_string),
-    active_key_(active_key_string),
-	invalid_char_(invalid_char)
-{
-}
+handle_strings::handle_strings()
+= default;
 
 //Generates random key using characters in active_chars
 std::string return_random_key(std::string input_string)
@@ -42,26 +38,34 @@ std::string encrypt_decrypt(std::string string_to_encrypt, const std::string& st
 //Sets active_key_string to the randomly generated key from return_random_key
 void handle_strings::key_init()
 {
-    *active_key_ = return_random_key(char_list_);
+    active_key_ = return_random_key(char_list_);
     active_chars_ = char_list_;
 }
 
+//Returns user phrase for use in app
+std::string handle_strings::return_user_phrase()
+{
+    std::string user_phrase = user_phrase_;
+    return user_phrase;
+}
+
+//Generates a new key or allows the entry of an existing one
 void handle_strings::encryption_key()
 {
     bool running{ true };
     while (running)
     {
-        console_out console_out(user_phrase_, active_key_, invalid_char_);
+        console_out console_out;
         handle_console handle_console;
         std::string user_selection{};
-        console_out.print_encrypt_key_menu();
+        console_out.print_encrypt_key_menu(active_key_);
         user_selection = handle_console.valid_char("123");
         if (user_selection == "1")
         {
             handle_console.clear();
             key_init();
             std::cout << "New key generated successfully!" << std::endl;
-            console_out.print_current_key();
+            console_out.print_current_key(active_key_, 1);
             std::cout << "\nPress 'Y' to continue: ";
             user_selection = handle_console.valid_char("yYnN");
             if (user_selection == "y" || user_selection == "Y")
@@ -76,10 +80,10 @@ void handle_strings::encryption_key()
             std::cout << "Enter your encryption key below" << std::endl;
             std::cout << "\nYour key: ";
             handle_console.pause();
-            std::getline(std::cin, *active_key_);
+            std::getline(std::cin, active_key_);
             handle_console.clear();
             std::cout << "Encryption key updated successfully!";
-            console_out.print_current_key();
+            console_out.print_current_key(active_key_, 2);
             std::cout << "\nPress 'Y' to continue: ";
             user_selection = handle_console.valid_char("yYnN");
             if (user_selection == "y" || user_selection == "Y")
@@ -99,25 +103,23 @@ void handle_strings::encryption_key()
 //Gets words from user to be stored in the user_phrase string
 void handle_strings::store_user_phrase()
 {
-    console_out console_out(user_phrase_, active_key_, invalid_char_);
-    const std::string user_phrase = *user_phrase_;
-    if (user_phrase.length() > 0)
+    console_out console_out;
+    if (user_phrase_.length() > 0)
     {
         console_out.print_phrase_already_stored();
     }
-    if (user_phrase.length() == 0)
+    if (user_phrase_.length() == 0)
     {
         handle_console handle_console;
         bool running{ true };
         while (running)
         {
-            
             std::cout << "Enter the word or phrase you would like to be encrypted or decrypted" << std::endl;
             std::cout << "\nYour Phrase: ";
             handle_console.pause();
-            std::getline(std::cin, *user_phrase_);
+            std::getline(std::cin, user_phrase_);
             handle_console.clear();
-            if (user_phrase_)
+            if (user_phrase_.length() >= 1)
             {
                 console_out.print_store_phrase_success();
                 running = false;
@@ -133,8 +135,8 @@ void handle_strings::encrypt()
     while (running)
     {
         handle_console handle_console;
-    	console_out console_out(user_phrase_, active_key_, invalid_char_);
-        console_out.print_current_key();
+    	console_out console_out;
+        console_out.print_current_key(active_key_, 1);
         std::cout << "\nWhen ready to proceed press 'Y' or to cancel press 'N': ";
         std::string user_selection = handle_console.valid_char("yYnN");
         if (user_selection == "n" || user_selection == "N")
@@ -148,14 +150,14 @@ void handle_strings::encrypt()
             handle_console.clear();
             for (int x{ 0 }; x < num_of_passes; ++x)
             {
-                std::string user_phrase = *user_phrase_;
+                std::string user_phrase = user_phrase_;
                 bool success{ false };
                 for (size_t i{ 0 }; i < user_phrase.length(); ++i)
                 {
                     const size_t position = active_chars_.find(user_phrase.at(i));
                     if (position > active_chars_.length())
                     {
-                        *invalid_char_ = user_phrase.at(i);
+                        invalid_char_ = user_phrase.at(i);
                         success = false;
                     }
                     if (i != std::string::npos && position <= active_chars_.length())
@@ -166,28 +168,19 @@ void handle_strings::encrypt()
                 if (success)
                 {
                     active_chars_ = encrypt_decrypt(active_chars_,
-                    char_list_, *active_key_, *active_key_);
-                    *user_phrase_ = encrypt_decrypt(*user_phrase_,
-                    active_chars_, *user_phrase_, *active_key_);
+                    char_list_, active_key_, active_key_);
+                    user_phrase_ = encrypt_decrypt(user_phrase_,
+                    active_chars_, user_phrase_, active_key_);
                     running = false;
                 }
                 else
                 {
-                    console_out.print_char_not_in_key();
+                    console_out.print_char_not_in_key(invalid_char_);
                     num_of_passes = 0;
                     running = false;
                 }
             }
-            if (num_of_passes == 1)
-            {
-                std::cout << "*1 encryption pass complete*" << std::endl;
-                console_out.print_encrypt_success();
-            }
-            if (num_of_passes > 1)
-            {
-                std::cout << "\n*" << num_of_passes << " encryption passes complete*" << std::endl;
-                console_out.print_encrypt_success();
-            }
+            console_out.print_encrypt_success(num_of_passes);
         }
     }
 }
@@ -198,26 +191,26 @@ void handle_strings::decrypt()
     bool running{ true };
     while (running)
     {
-        console_out console_out(user_phrase_, active_key_, invalid_char_);
+        console_out console_out;
         bool success{ false };
-        console_out.print_current_key();
+        console_out.print_current_key(active_key_, 2);
         std::cout << "\nEnter the number of decryption passes you would like: ";
         handle_console handle_console;
         int num_of_passes = handle_console.valid_num(100);
         handle_console.clear();
         active_chars_ = encrypt_decrypt(active_chars_, char_list_,
-        *active_key_, *active_key_);
-        std::string user_phrase = *user_phrase_;
+        active_key_, active_key_);
+        std::string user_phrase = user_phrase_;
         for (int x{ 0 }; x < num_of_passes; ++x)
         {
             for (size_t i{ 0 }; i < user_phrase.length(); ++i)
             {
-                std::string active_key = *active_key_;
+                std::string active_key = active_key_;
                 const size_t position = active_key.find(user_phrase.at(i));
                 const char letter = user_phrase.at(i);
                 if (position > active_key.length() || active_key.find(letter) == std::string::npos)
                 {
-                    *invalid_char_ = user_phrase.at(i);
+                    invalid_char_ = user_phrase.at(i);
                     success = false;
                     break;
                 }
@@ -228,36 +221,26 @@ void handle_strings::decrypt()
             }
             if (success)
             {
-                *user_phrase_ = encrypt_decrypt(*user_phrase_, *active_key_,
-                *user_phrase_, active_chars_);
+                user_phrase_ = encrypt_decrypt(user_phrase_, active_key_,
+                user_phrase_, active_chars_);
                 running = false;
             }
             if (success == false)
             {
                 {
-                    console_out.print_char_not_in_key();
+                    console_out.print_char_not_in_key(invalid_char_);
                     num_of_passes = 0;
                     running = false;
                 }
             }
         }
-        if (num_of_passes == 1)
-        {
-            std::cout << "\n*1 decryption pass complete*" << std::endl;
-            console_out.print_decrypt_success();
-        }
-        if (num_of_passes > 1)
-        {
-            std::cout << "\n*" << num_of_passes << " decryption passes complete*" << std::endl;
-            console_out.print_decrypt_success();
-        }
+        console_out.print_decrypt_success(num_of_passes);
     }
 }
 
 //Clears the user_phrase string
 void handle_strings::clear_phrase()
 {
-    console_out console_out(user_phrase_, active_key_, invalid_char_);
     std::string user_selection{};
     std::cout << "\nAre you sure you would like to clear your stored phrase?" << std::endl;
     std::cout << "\nIf yes press 'Y' or press 'N' to return to the menu : ";
@@ -266,7 +249,8 @@ void handle_strings::clear_phrase()
     handle_console.clear();
     if (user_selection == "y" || user_selection == "Y")
     {
-        *user_phrase_ = "";
+        console_out console_out;
+        user_phrase_ = "";
         console_out.print_clear_success();
     }
 }
