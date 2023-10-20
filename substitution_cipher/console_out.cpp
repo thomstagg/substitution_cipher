@@ -4,34 +4,99 @@
 console_out::console_out()
 = default;
 
-//Prints no phrase stored warning
-void console_out::print_no_phrase()
+void console_out::message(std::string message_choice)
 {
-    std::cout << "\n--------------------------------------------" << std::endl;
-    std::cout << "||                 Whoops!                ||" << std::endl;
-    std::cout << "||            No phrase stored            ||" << std::endl;
-    std::cout << "||          please enter a phrase         ||" << std::endl;
-    std::cout << "||             using option 'S'           ||" << std::endl;
-    std::cout << "||              and try again             ||" << std::endl;
-    std::cout << "--------------------------------------------" << std::endl;
-}
-
-//Prints phrase already stored message
-void console_out::print_phrase_already_stored()
-{
-    std::cout << "\n--------------------------------------------" << std::endl;
-    std::cout << "||             A word or phrase           ||" << std::endl;
-    std::cout << "||            is already stored!          ||" << std::endl;
-    std::cout << "--------------------------------------------" << std::endl;
-}
-
-//Prints store phrase successful message
-void console_out::print_store_phrase_success()
-{
-    std::cout << "\n--------------------------------------------" << std::endl;
-    std::cout << "||                 Phrase                 ||" << std::endl;
-    std::cout << "||           stored successfully!         ||" << std::endl;
-    std::cout << "--------------------------------------------" << std::endl;
+    if(message_choice == "welcome_message")
+    {
+        std::cout << "\nWelcome to the Substitution Cipher" << std::endl;
+        message_choice = "";
+    }
+	if(message_choice == "no_phrase")
+	{
+        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "||                 Whoops!                ||" << std::endl;
+        std::cout << "||            No phrase stored            ||" << std::endl;
+        std::cout << "||          please enter a phrase         ||" << std::endl;
+        std::cout << "||             using option 'S'           ||" << std::endl;
+        std::cout << "||              and try again             ||" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
+        message_choice = "";
+	}
+    if(message_choice == "phrase_already_stored")
+    {
+        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "||             A word or phrase           ||" << std::endl;
+        std::cout << "||            is already stored!          ||" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
+        message_choice = "";
+    }
+    if(message_choice == "store_phrase_success")
+    {
+        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "||                 Phrase                 ||" << std::endl;
+        std::cout << "||           stored successfully!         ||" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
+        message_choice = "";
+    }
+    if(message_choice == "clear_success")
+    {
+        std::cout << "\n--------------------------------------------" << std::endl;
+        std::cout << "||           cleared successfully!        ||" << std::endl;
+        std::cout << "--------------------------------------------" << std::endl;
+        message_choice = "";
+    }
+    if (message_choice == "key_gen_success")
+    {
+        std::cout << "New key generated successfully!" << std::endl;
+        message_choice = "";
+    }
+    if(message_choice == "y_continue")
+    {
+        std::cout << "\nPress 'Y' to continue: ";
+        message_choice = "";
+    }
+    if(message_choice == "yes_no")
+    {
+        std::cout << "\nWhen ready to proceed press 'Y' or to cancel press 'N': ";
+        message_choice = "";
+    }
+    if(message_choice == "enter_encrypt_key")
+    {
+        std::cout << "Enter your encryption key below" << std::endl;
+        std::cout << "\nYour key: ";
+        message_choice = "";
+    }
+    if(message_choice == "key_updated_success")
+    {
+        std::cout << "Encryption key updated successfully!" << std::endl;
+        message_choice = "";
+    }
+    if(message_choice == "enter_phrase")
+    {
+        std::cout << "Enter the word or phrase you would like to be encrypted or decrypted" << std::endl;
+        std::cout << "\nYour Phrase: ";
+        message_choice = "";
+    }
+    if(message_choice == "encrypt_pass_num")
+    {
+        std::cout << "\nEnter the number of encryption passes you would like: ";
+        message_choice = "";
+    }
+    if(message_choice == "decrypt_pass_num")
+    {
+        std::cout << "\nEnter the number of decryption passes you would like: ";
+        message_choice = "";
+    }
+    if(message_choice == "clear_phrase")
+    {
+        std::cout << "\nAre you sure you would like to clear your stored phrase?" << std::endl;
+        message_choice = "";
+    }
+    else if(message_choice.length() >= 1)
+    {
+        std::cout << "*******DEBUG INCORRECT STRING INPUT INTO FUNCTION********" << std::endl;
+        message_choice = "";
+    }
 }
 
 //Prints encryption key menu
@@ -120,19 +185,9 @@ void console_out::print_current_key(const std::string& active_key, int option)
     }
 }
 
-//Prints console cleared successfully message
-void console_out::print_clear_success()
-{
-    std::cout << "\n--------------------------------------------" << std::endl;
-    std::cout << "||           cleared successfully!        ||" << std::endl;
-    std::cout << "--------------------------------------------" << std::endl;
-}
-
-
 //Prints Menu to console
 void console_out::print_menu(const std::string& user_phrase)
 {
-    std::cout << "\nWelcome to the Substitution Cipher" << std::endl;
     if (user_phrase.length() == 0)
     {
         std::cout << "\n--------------------------------------------" << std::endl;

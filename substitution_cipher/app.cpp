@@ -11,6 +11,7 @@ void app::init()
     handle_strings handle_strings;
     console_out console_out;
     handle_strings.key_init();
+    console_out.message("welcome_message");
     std::string user_selection{};
     bool running{ true };
     while (running)
@@ -41,7 +42,7 @@ void app::init()
             if (user_phrase.empty() && user_selection == "e"
                 || user_phrase.empty() && user_selection == "E")
             {
-                console_out.print_no_phrase();
+                console_out.message("no_phrase");
                 break;
             }
             if (!user_phrase.empty() && user_selection == "d"
@@ -53,7 +54,7 @@ void app::init()
             if (user_phrase.empty() && user_selection == "d"
                 || user_phrase.empty() && user_selection == "D")
             {
-                console_out.print_no_phrase();
+                console_out.message("no_phrase");
                 break;
             }
             if (user_selection == "c" || user_selection == "C")

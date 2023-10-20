@@ -64,9 +64,9 @@ void handle_strings::encryption_key()
         {
             handle_console.clear();
             key_init();
-            std::cout << "New key generated successfully!" << std::endl;
+            console_out.message("key_gen_success");
             console_out.print_current_key(active_key_, 1);
-            std::cout << "\nPress 'Y' to continue: ";
+            console_out.message("y_continue");
             user_selection = handle_console.valid_char("yYnN");
             if (user_selection == "y" || user_selection == "Y")
             {
@@ -77,14 +77,13 @@ void handle_strings::encryption_key()
         if (user_selection == "2")
         {
             handle_console.clear();
-            std::cout << "Enter your encryption key below" << std::endl;
-            std::cout << "\nYour key: ";
+            console_out.message("enter_encrypt_key");
             handle_console.pause();
             std::getline(std::cin, active_key_);
             handle_console.clear();
-            std::cout << "Encryption key updated successfully!";
+            console_out.message("key_updated_success");
             console_out.print_current_key(active_key_, 2);
-            std::cout << "\nPress 'Y' to continue: ";
+            console_out.message("y_continue");
             user_selection = handle_console.valid_char("yYnN");
             if (user_selection == "y" || user_selection == "Y")
             {
@@ -106,7 +105,7 @@ void handle_strings::store_user_phrase()
     console_out console_out;
     if (user_phrase_.length() > 0)
     {
-        console_out.print_phrase_already_stored();
+        console_out.message("phrase_already_stored");
     }
     if (user_phrase_.length() == 0)
     {
@@ -114,14 +113,13 @@ void handle_strings::store_user_phrase()
         bool running{ true };
         while (running)
         {
-            std::cout << "Enter the word or phrase you would like to be encrypted or decrypted" << std::endl;
-            std::cout << "\nYour Phrase: ";
+            console_out.message("enter_phrase");
             handle_console.pause();
             std::getline(std::cin, user_phrase_);
             handle_console.clear();
             if (user_phrase_.length() >= 1)
             {
-                console_out.print_store_phrase_success();
+                console_out.message("store_phrase_success");
                 running = false;
             }
         }
@@ -137,7 +135,7 @@ void handle_strings::encrypt()
         handle_console handle_console;
     	console_out console_out;
         console_out.print_current_key(active_key_, 1);
-        std::cout << "\nWhen ready to proceed press 'Y' or to cancel press 'N': ";
+        console_out.message("yes_no");
         std::string user_selection = handle_console.valid_char("yYnN");
         if (user_selection == "n" || user_selection == "N")
         {
@@ -145,7 +143,7 @@ void handle_strings::encrypt()
         }
         if (user_selection == "y" || user_selection == "Y")
         {
-            std::cout << "\nEnter the number of encryption passes you would like: ";
+            console_out.message("encrypt_pass_num");
             int num_of_passes = handle_console.valid_num(100);
             handle_console.clear();
             for (int x{ 0 }; x < num_of_passes; ++x)
@@ -194,7 +192,7 @@ void handle_strings::decrypt()
         console_out console_out;
         bool success{ false };
         console_out.print_current_key(active_key_, 2);
-        std::cout << "\nEnter the number of decryption passes you would like: ";
+        console_out.message("decrypt_pass_num");
         handle_console handle_console;
         int num_of_passes = handle_console.valid_num(100);
         handle_console.clear();
@@ -241,16 +239,16 @@ void handle_strings::decrypt()
 //Clears the user_phrase string
 void handle_strings::clear_phrase()
 {
+    console_out console_out;
     std::string user_selection{};
-    std::cout << "\nAre you sure you would like to clear your stored phrase?" << std::endl;
-    std::cout << "\nIf yes press 'Y' or press 'N' to return to the menu : ";
+    console_out.message("clear_phrase");
+    console_out.message("yes_no");
     handle_console handle_console;
     user_selection = handle_console.valid_char("yYnN");
     handle_console.clear();
     if (user_selection == "y" || user_selection == "Y")
     {
-        console_out console_out;
         user_phrase_ = "";
-        console_out.print_clear_success();
+        console_out.message("clear_success");
     }
 }
