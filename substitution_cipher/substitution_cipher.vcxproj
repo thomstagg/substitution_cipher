@@ -128,15 +128,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="user_input_handling.cpp" />
-    <ClCompile Include="print_messages.cpp" />
+    <ClCompile Include="app.cpp" />
+    <ClCompile Include="console_out.cpp" />
+    <ClCompile Include="handle_console.cpp" />
+    <ClCompile Include="handle_strings.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="string_handling.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="user_input_handling.h" />
-    <ClInclude Include="print_messages.h" />
-    <ClInclude Include="string_handling.h" />
+    <ClInclude Include="app.h" />
+    <ClInclude Include="console_out.h" />
+    <ClInclude Include="handle_console.h" />
+    <ClInclude Include="handle_strings.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

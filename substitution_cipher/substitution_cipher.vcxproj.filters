@@ -15,27 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="print_messages.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="user_input_handling.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="string_handling.cpp">
+    <ClCompile Include="app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="console_out.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="handle_strings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="handle_console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="user_input_handling.h">
+    <ClInclude Include="app.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="print_messages.h">
+    <ClInclude Include="console_out.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="string_handling.h">
+    <ClInclude Include="handle_strings.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="handle_console.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
