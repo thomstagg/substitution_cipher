@@ -92,6 +92,11 @@ void console_out::message(std::string message_choice)
         std::cout << "\nAre you sure you would like to clear your stored phrase?" << std::endl;
         message_choice = "";
     }
+    if (message_choice == "enter_random_seed")
+    {
+        std::cout << "\nEnter a number and keep it safe this will be required to decrypt:" << std::endl;
+        message_choice = "";
+    }
     else if(message_choice.length() >= 1)
     {
         std::cout << "*******DEBUG - INCORRECT STRING INPUT INTO FUNCTION********" << std::endl;

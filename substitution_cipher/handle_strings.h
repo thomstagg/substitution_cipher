@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 class handle_strings
 {
@@ -12,7 +13,12 @@ public:
 	void encrypt();
 	void decrypt();
 	void clear_phrase();
+	void shuffle_phrase();
+	void unshuffle_phrase();
 
+	std::vector<size_t> generate_permutation(size_t length, size_t seed);
+	std::string apply_permutation(const std::string& input, const std::vector<size_t>& perm);
+	std::string reverse_permutation(const std::string& input, const std::vector<size_t>& perm);
 	std::string return_user_phrase();
 
 private:

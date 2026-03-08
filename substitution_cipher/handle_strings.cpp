@@ -5,9 +5,47 @@
 #include <iostream>
 #include <random>
 #include <algorithm>
+#include <vector>
+#include <numeric>
 
 handle_strings::handle_strings()
 = default;
+
+std::vector<size_t> shuffle_indices_; // permutation for reversible shuffle
+size_t shuffle_seed_{};               // user-chosen seed for shuffling
+
+std::vector<size_t> handle_strings::generate_permutation(size_t length, size_t seed)
+{
+    std::vector<size_t> indices(length);
+    std::iota(indices.begin(), indices.end(), 0);
+
+    std::mt19937 gen(seed);
+    std::shuffle(indices.begin(), indices.end(), gen);
+
+    return indices;
+}
+
+// Apply a permutation to a string
+std::string handle_strings::apply_permutation(const std::string& input, const std::vector<size_t>& perm)
+{
+    std::string output(input.size(), '\0');
+    for (size_t i = 0; i < perm.size(); ++i)
+    {
+        output[i] = input[perm[i]];
+    }
+    return output;
+}
+
+// Reverse a permutation
+std::string handle_strings::reverse_permutation(const std::string& input, const std::vector<size_t>& perm)
+{
+    std::string output(input.size(), '\0');
+    for (size_t i = 0; i < perm.size(); ++i)
+    {
+        output[perm[i]] = input[i];
+    }
+    return output;
+}
 
 //Generates random key using characters in active_chars
 std::string return_random_key(std::string input_string)
@@ -18,6 +56,32 @@ std::string return_random_key(std::string input_string)
     std::mt19937 twist(random());
     std::shuffle(chars.begin(), chars.end(), twist);
     return chars;
+}
+
+// Shuffle user_phrase_ deterministically using a seed
+void handle_strings::shuffle_phrase()
+{
+    std::vector<size_t> indices(user_phrase_.size());
+    std::iota(indices.begin(), indices.end(), 0); // 0,1,2,...
+
+    std::mt19937 gen(shuffle_seed_);
+    std::shuffle(indices.begin(), indices.end(), gen);
+
+    std::string shuffled = user_phrase_;
+    for (size_t i = 0; i < indices.size(); ++i)
+        shuffled[i] = user_phrase_[indices[i]];
+
+    user_phrase_ = shuffled;
+    shuffle_indices_ = indices;
+}
+
+void handle_strings::unshuffle_phrase()
+{
+    std::string original = user_phrase_;
+    for (size_t i = 0; i < shuffle_indices_.size(); ++i)
+        original[shuffle_indices_[i]] = user_phrase_[i];
+
+    user_phrase_ = original;
 }
 
 //Encrypts or decrypts input string
@@ -129,114 +193,109 @@ void handle_strings::store_user_phrase()
 //Encrypts user phrase
 void handle_strings::encrypt()
 {
-    bool running{ true };
-    while (running)
+    handle_console handle_console;
+    console_out console_out;
+
+    console_out.print_current_key(active_key_, 1);
+    console_out.message("yes_no");
+    std::string user_selection = handle_console.valid_char("yYnN");
+    if (user_selection == "n" || user_selection == "N") return;
+
+    if (user_selection == "y" || user_selection == "Y")
     {
-        handle_console handle_console;
-    	console_out console_out;
-        std::string user_selection{};
-        console_out.print_current_key(active_key_, 1);
-        console_out.message("yes_no");
-        user_selection = handle_console.valid_char("yYnN");
-        if (user_selection == "n" || user_selection == "N")
+        // Number of encryption passes
+        console_out.message("encrypt_pass_num");
+        int num_of_passes = handle_console.valid_num(100);
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        // User chooses seed
+        console_out.message("enter_random_seed");
+        shuffle_seed_ = handle_console.valid_num(1000000);
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        // Generate deterministic permutation
+        shuffle_indices_ = generate_permutation(user_phrase_.size(), shuffle_seed_);
+
+        // Apply permutation
+        user_phrase_ = apply_permutation(user_phrase_, shuffle_indices_);
+
+        // --- Encryption loop ---
+        bool success = true;
+        for (int x = 0; x < num_of_passes; ++x)
         {
-            running = false;
-        }
-        if (user_selection == "y" || user_selection == "Y")
-        {
-            int num_of_passes{};
-            console_out.message("encrypt_pass_num");
-            num_of_passes = handle_console.valid_num(100);
-            handle_console.clear();
-            for (int x{ 0 }; x < num_of_passes; ++x)
+            for (size_t i = 0; i < user_phrase_.length(); ++i)
             {
-                std::string user_phrase = user_phrase_;
-                bool success{ false };
-                for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+                if (active_chars_.find(user_phrase_[i]) == std::string::npos)
                 {
-                    const size_t position = active_chars_.find(user_phrase.at(i));
-                    if (position > active_chars_.length())
-                    {
-                        invalid_char_ = user_phrase.at(i);
-                        success = false;
-                    }
-                    if (i != std::string::npos && position <= active_chars_.length())
-                    {
-                        success = true;
-                    }
-                }
-                if (success)
-                {
-                    active_chars_ = encrypt_decrypt(active_chars_,
-                    char_list_, active_key_, active_key_);
-                    user_phrase_ = encrypt_decrypt(user_phrase_,
-                    active_chars_, user_phrase_, active_key_);
-                    running = false;
-                }
-                else
-                {
-                    console_out.print_char_not_in_key(invalid_char_);
-                    num_of_passes = 0;
-                    running = false;
+                    invalid_char_ = user_phrase_[i];
+                    success = false;
+                    break;
                 }
             }
-            console_out.print_encrypt_success(num_of_passes);
+
+            if (!success)
+            {
+                console_out.print_char_not_in_key(invalid_char_);
+                break;
+            }
+
+            active_chars_ = encrypt_decrypt(active_chars_, char_list_, active_key_, active_key_);
+            user_phrase_ = encrypt_decrypt(user_phrase_, active_chars_, user_phrase_, active_key_);
         }
+
+        if (success)
+            console_out.print_encrypt_success(num_of_passes);
     }
 }
 
 //Decrypts user phrase
 void handle_strings::decrypt()
 {
-    bool running{ true };
-    while (running)
+    handle_console handle_console;
+    console_out console_out;
+
+    console_out.print_current_key(active_key_, 2);
+
+    // Number of decryption passes
+    console_out.message("decrypt_pass_num");
+    int num_of_passes = handle_console.valid_num(100);
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    // User enters the same seed
+    console_out.message("enter_random_seed");
+    shuffle_seed_ = handle_console.valid_num(1000000);
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    // Recreate the same permutation
+    shuffle_indices_ = generate_permutation(user_phrase_.size(), shuffle_seed_);
+
+    // --- Decryption loop ---
+    bool success = true;
+    for (int x = 0; x < num_of_passes; ++x)
     {
-        handle_console handle_console;
-        console_out console_out;
-        bool success{ false };
-        int num_of_passes{};
-        console_out.print_current_key(active_key_, 2);
-        console_out.message("decrypt_pass_num");
-        num_of_passes = handle_console.valid_num(100);
-        handle_console.clear();
-        active_chars_ = encrypt_decrypt(active_chars_, char_list_,
-        active_key_, active_key_);
-        std::string user_phrase = user_phrase_;
-        for (int x{ 0 }; x < num_of_passes; ++x)
+        for (size_t i = 0; i < user_phrase_.length(); ++i)
         {
-            for (size_t i{ 0 }; i < user_phrase.length(); ++i)
+            if (active_key_.find(user_phrase_[i]) == std::string::npos)
             {
-                std::string active_key = active_key_;
-                const size_t position = active_key.find(user_phrase.at(i));
-                const char letter = user_phrase.at(i);
-                if (position > active_key.length() || active_key.find(letter) == std::string::npos)
-                {
-                    invalid_char_ = user_phrase.at(i);
-                    success = false;
-                    break;
-                }
-                if (position <= active_key.length())
-                {
-                    success = true;
-                }
-            }
-            if (success)
-            {
-                user_phrase_ = encrypt_decrypt(user_phrase_, active_key_,
-                user_phrase_, active_chars_);
-                running = false;
-            }
-            if (success == false)
-            {
-                {
-                    console_out.print_char_not_in_key(invalid_char_);
-                    num_of_passes = 0;
-                    running = false;
-                }
+                invalid_char_ = user_phrase_[i];
+                success = false;
+                break;
             }
         }
-        console_out.print_decrypt_success(num_of_passes);
+
+        if (!success)
+        {
+            console_out.print_char_not_in_key(invalid_char_);
+            break;
+        }
+
+        user_phrase_ = encrypt_decrypt(user_phrase_, active_key_, user_phrase_, active_chars_);
     }
+
+    if (success)
+        user_phrase_ = reverse_permutation(user_phrase_, shuffle_indices_);
+
+    console_out.print_decrypt_success(num_of_passes);
 }
 
 //Clears the user_phrase string
